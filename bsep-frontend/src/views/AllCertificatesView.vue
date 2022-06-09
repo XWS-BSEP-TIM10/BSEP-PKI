@@ -155,7 +155,7 @@ export default {
     if (this.role == null) this.role = ''
     axios.defaults.headers.common.Authorization =
       'Bearer ' + window.sessionStorage.getItem('jwt')
-    axios.get('http://localhost:8080/api/v1/certificate').then((response) => {
+    axios.get('https://localhost:8080/api/v1/certificate').then((response) => {
       this.certificates = response.data
     })
   },
@@ -180,7 +180,7 @@ export default {
       axios.defaults.headers.common.Authorization =
         'Bearer ' + window.sessionStorage.getItem('jwt')
       axios
-        .get('http://localhost:8080/api/v1/certificate/' + id + '/download')
+        .get('https://localhost:8080/api/v1/certificate/' + id + '/download')
         .then((response) => {
           const blob = new Blob([response.data], {
             type: 'application/x-x509-ca-cert'
@@ -197,7 +197,7 @@ export default {
         'Bearer ' + window.sessionStorage.getItem('jwt')
       axios
         .put(
-          'http://localhost:8080/api/v1/certificate/' +
+          'https://localhost:8080/api/v1/certificate/' +
             serialNumber +
             '/revoke'
         )
@@ -210,7 +210,7 @@ export default {
         'Bearer ' + window.sessionStorage.getItem('jwt')
       axios
         .get(
-          'http://localhost:8080/api/v1/certificate/' +
+          'https://localhost:8080/api/v1/certificate/' +
             serialNumber +
             '/status'
         )

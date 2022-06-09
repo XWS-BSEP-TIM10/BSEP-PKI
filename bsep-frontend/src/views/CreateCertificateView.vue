@@ -155,7 +155,7 @@ export default {
     axios.defaults.headers.common.Authorization =
       'Bearer ' + window.sessionStorage.getItem('jwt')
     axios
-      .get('http://localhost:8080/api/v1/users/getAllUsers')
+      .get('https://localhost:8080/api/v1/users/getAllUsers')
       .then((response) => {
         this.allSubjects = response.data
       })
@@ -188,7 +188,7 @@ export default {
       axios.defaults.headers.common.Authorization =
         'Bearer ' + window.sessionStorage.getItem('jwt')
       axios
-        .post('http://localhost:8080/api/v1/certificate/create', newCertificate)
+        .post('https://localhost:8080/api/v1/certificate/create', newCertificate)
         .then((response) => {
           alert('Success')
         })

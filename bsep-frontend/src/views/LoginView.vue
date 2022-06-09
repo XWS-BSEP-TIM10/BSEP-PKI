@@ -48,7 +48,7 @@ export default {
         password: this.password
       }
       axios
-        .post('http://localhost:8080/api/v1/auth/login', user)
+        .post('https://localhost:8080/api/v1/auth/login', user)
         .then((response) => {
           window.sessionStorage.setItem('jwt', response.data.jwt)
           this.$router.push('/all-certificates-page')
