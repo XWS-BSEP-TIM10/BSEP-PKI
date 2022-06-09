@@ -3,6 +3,9 @@ package com.Bsep.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 // POJO koji implementira Spring Security GrantedAuthority kojim se mogu definisati role u aplikaciji
@@ -19,7 +22,12 @@ public class Role implements GrantedAuthority {
 
     @Column(name="name")
     String name;
-
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+   	@JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
+    private Set<Permission> permission = new HashSet<Permission>();
+    
+    
     @JsonIgnore
     @Override
     public String getAuthority() {
@@ -43,4 +51,14 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
+	public Set<Permission> getPermission() {
+		return permission;
+	}
+
+	public void setPermission(Set<Permission> permission) {
+		this.permission = permission;
+	}
+
+    
+    
 }

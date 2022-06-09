@@ -4,12 +4,54 @@ VALUES (1, 'ROLE_USER');
 INSERT INTO role (ID, NAME)
 VALUES (2, 'ROLE_ADMIN');
 
-INSERT INTO users (ID, FIRST_NAME, LAST_NAME, PASSWORD, PHONE_NUMBER, USERNAME, ROLE_ID)
-VALUES (1, 'Pera', 'Peric', '$2a$10$28MUwyYgna28OIxoUnE7VOpjby0JRJUU0WQV0UZdMX5XA46XAvBCK', '+329032032', 'peraperic', 2);
+INSERT INTO users (ID, FIRST_NAME, LAST_NAME, PASSWORD, PHONE_NUMBER, USERNAME)
+VALUES (1, 'Pera', 'Peric', '$2a$10$28MUwyYgna28OIxoUnE7VOpjby0JRJUU0WQV0UZdMX5XA46XAvBCK', '+329032032', 'peraperic');
 
-INSERT INTO users (ID, FIRST_NAME, LAST_NAME, PASSWORD, PHONE_NUMBER, USERNAME, ROLE_ID)
-VALUES (2, 'Toma', 'Tomic', '$2a$10$28MUwyYgna28OIxoUnE7VOpjby0JRJUU0WQV0UZdMX5XA46XAvBCK', '+32323232', 'tomatomic', 1);
+INSERT INTO users (ID, FIRST_NAME, LAST_NAME, PASSWORD, PHONE_NUMBER, USERNAME)
+VALUES (2, 'Toma', 'Tomic', '$2a$10$28MUwyYgna28OIxoUnE7VOpjby0JRJUU0WQV0UZdMX5XA46XAvBCK', '+32323232', 'tomatomic');
 
-INSERT INTO users (ID, FIRST_NAME, LAST_NAME, PASSWORD, PHONE_NUMBER, USERNAME, ROLE_ID)
-VALUES (3, 'Steva', 'Stevic', '$2a$10$28MUwyYgna28OIxoUnE7VOpjby0JRJUU0WQV0UZdMX5XA46XAvBCK', '+2342332', 'stevastevic', 1);
+INSERT INTO users (ID, FIRST_NAME, LAST_NAME, PASSWORD, PHONE_NUMBER, USERNAME)
+VALUES (3, 'Steva', 'Stevic', '$2a$10$28MUwyYgna28OIxoUnE7VOpjby0JRJUU0WQV0UZdMX5XA46XAvBCK', '+2342332', 'stevastevic');
 
+INSERT INTO user_role (ROLE_ID, USER_ID)
+VALUES (2, 1);
+INSERT INTO user_role (ROLE_ID, USER_ID)
+VALUES (1, 2);
+INSERT INTO user_role (ROLE_ID, USER_ID)
+VALUES (1, 3);
+
+INSERT INTO permission(id, name)
+VALUES (1, 'CREATE_CERTIFICATE_PERMISSION');
+INSERT INTO permission(id, name)
+VALUES (2, 'GET_CERTIFICATES_PERMISSION');
+INSERT INTO permission(id, name)
+VALUES (3, 'DOWNLOAD_CERTIFICATE_PERMISSION');
+INSERT INTO permission(id, name)
+VALUES (4, 'REVOKE_CERTIFICATE_PERMISSION');
+INSERT INTO permission(id, name)
+VALUES (5, 'CHECK_CERTIFICATE_PERMISSION');
+INSERT INTO permission(id, name)
+VALUES (6, 'GET_USERS_PERMISSION');
+
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (1, 1);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (2, 1);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (1, 2);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (2, 2);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (1, 3);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (2, 3);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (2, 4);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (1, 5);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (2, 5);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (1, 6);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (2, 6);

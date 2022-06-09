@@ -3,17 +3,25 @@ package com.Bsep.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -41,15 +49,18 @@ public class User implements UserDetails {
     @Column(name = "phoneNumber", unique = false, nullable = false)
     private String phoneNumber;
 
-    @OneToOne(targetEntity = Role.class, cascade = CascadeType.MERGE)
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
 
 
     public User() {
     }
 
 
-    public User(Long id, String username, String password, String firstName, String lastName, String phoneNumber,
+  /*  public User(Long id, String username, String password, String firstName, String lastName, String phoneNumber,
                 Role userType) {
         super();
         this.id = id;
@@ -58,15 +69,30 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.role = userType;
-    }
+        this.role = new Array;
+    }*/
+    
+    
 
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public User(Long id, String username, String password, String firstName, String lastName, String phoneNumber,
+			List<Role> roles) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+		this.roles = roles;
+	}
+
+
+	public void setId(Long id) {
         this.id = id;
     }
 
@@ -102,11 +128,13 @@ public class User implements UserDetails {
         this.phoneNumber = phoneNumber;
     }
 
-    public Role getRole() {
-        return role;
-    }
+    
+    public List<Role> getRoles() {
+		return roles;
+	}
 
-    @Override
+
+	@Override
     public String getUsername() {
         return username;
     }
@@ -133,8 +161,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<Role> roles = new ArrayList<>();
-        roles.add(role);
-        return roles;
+    	Set<Permission> permissions = new HashSet<Permission>();
+        for(Role role : this.roles){
+            for(Permission permission : role.getPermission()){
+                permissions.add(permission);
+            }
+        }
+        return permissions;
     }
 }

@@ -27,10 +27,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = (User) authentication.getPrincipal();
-        return new TokenDTO(getToken(user), user.getRole().getName());
+        return new TokenDTO(getToken(user), user.getRoles().get(0).getName());
     }
 
     private String getToken(User user) {
-        return tokenUtils.generateToken(user.getUsername(), user.getRole().getName());
+        return tokenUtils.generateToken(user.getUsername(), user.getRoles().get(0).getName());
     }
 }

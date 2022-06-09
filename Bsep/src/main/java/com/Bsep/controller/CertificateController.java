@@ -27,16 +27,16 @@ public class CertificateController {
     }
 
     @PostMapping(value = "/create")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('CREATE_CERTIFICATE_PERMISSION')")
     public ResponseEntity<CertificateData> createCertificate(@RequestBody NewCertificateDto newCertificateDto) throws Exception {
         CertificateData newCertificate = certificateService.createCertificate(newCertificateDto);
         if(newCertificate == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(newCertificate);
     }
-
+    
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('GET_CERTIFICATES_PERMISSION')")
     public ResponseEntity<List<CertificateDto>> getAllCertificates(@RequestParam(required = false) Boolean isCa, Authentication authentication) {
         List<GrantedAuthority> roles= (List<GrantedAuthority>) authentication.getAuthorities();
         List<CertificateDto> certificates;
@@ -48,7 +48,7 @@ public class CertificateController {
     }
 
     @GetMapping(value = "/{id}/download")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('DOWNLOAD_CERTIFICATE_PERMISSION')")
     public ResponseEntity<Resource> download(@PathVariable Long id) {
         try {
             Resource resource = certificateService.getCertificateResource(id);
@@ -66,21 +66,21 @@ public class CertificateController {
     }
 
     @PutMapping(value = "/{serial}/revoke")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('REVOKE_CERTIFICATE_PERMISSION')")
     public ResponseEntity<HttpStatus> revoke(@PathVariable String serial) {
         certificateService.revoke(serial);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/{serial}/status")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('CHECK_CERTIFICATE_PERMISSION')")
     public ResponseEntity<Boolean> isRevoked(@PathVariable String serial) {
         boolean isRevoked = certificateService.isRevoked(serial);
         return ResponseEntity.ok(isRevoked);
     }
 
     @GetMapping(value = "/{serial}/valid")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('CHECK_CERTIFICATE_PERMISSION')")
     public ResponseEntity<Boolean> isValid(@PathVariable String serial) {
         boolean isValid = certificateService.checkIsValid(serial);
         return ResponseEntity.ok(isValid);
