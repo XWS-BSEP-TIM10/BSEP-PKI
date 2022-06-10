@@ -8,12 +8,6 @@
     <div id="formContent">
       <!-- Login Form -->
       <form style="margin-top: 3em" @submit="checkForm">
-          <p style="color: red; background-color: white" v-if="errors.length">
-    <b>Please correct the following error(s):</b>
-    <ul v-for="error in errors" :key="error" style="color: red; background-color: white">
-      <li style="margin-left:20%">{{ error }}<br></li><br>
-    </ul>
-  </p>
         <select
           class="browser-default custom-select"
           style="width: 20em"
@@ -39,6 +33,7 @@
           class="browser-default custom-select"
           style="width: 20em; margin-top: 1em"
           v-model="subject"
+           v-on:change="checkSubject()"
         >
           <option selected hidden>Subject</option>
           <option
@@ -49,6 +44,7 @@
             {{ option.username }}
           </option>
         </select>
+        <div style="color:red">{{errors[1]}}</div>
         <input
           style="width: 20em; margin-top: 1em"
           type="text"
@@ -56,7 +52,9 @@
           name="login"
           placeholder="Oragnization"
           v-model="organization"
+          v-on:input="checkOrganization()"
         />
+        <div style="color:red">{{errors[2]}}</div>
         <input
           style="width: 20em; margin-top: 1em"
           type="text"
@@ -64,7 +62,9 @@
           name="login"
           placeholder="Oragnization unit name"
           v-model="organizationUnitName"
+          v-on:input="checkOrganizationUnitName()"
         />
+        <div style="color:red">{{errors[3]}}</div>
         <input
           style="width: 20em; margin-top: 1em"
           type="text"
@@ -72,7 +72,9 @@
           name="orgEmail"
           placeholder="Organization email"
           v-model="organizationEmail"
+          v-on:input="checkOrganizationEmail()"
         />
+        <div style="color:red">{{errors[4]}}</div>
         <input
           style="width: 20em; margin-top: 1em"
           type="text"
@@ -80,14 +82,18 @@
           name="orgEmail"
           placeholder="Country code"
           v-model="countryCode"
+          v-on:input="checkCountryCode()"
         />
+         <div style="color:red">{{errors[5]}}</div>
         <Datepicker
           v-model="date"
           :minDate = "(new Date()).setDate((new Date()).getDate()+1)"
           style="width: 20em; margin-top: 1em"
           class="fadeIn third"
           id="datePicker"
+          @update:modelValue="checkDate()"
         ></Datepicker>
+        <div style="color:red">{{errors[6]}}</div>
         <div style="text-align: left; margin-left: 4.3em;margin-top:1em">Key usages:</div>
         <select
           class="browser-default custom-select"
@@ -204,29 +210,54 @@ export default {
     checkForm: function (e) {
       this.errors = []
 
+      this.checkCertificateType()
+      this.checkSubject()
+      this.checkOrganization()
+      this.checkOrganizationUnitName()
+      this.checkOrganizationEmail()
+      this.checkCountryCode()
+      this.checkDate()
+      for (const element of this.errors) {
+        if (element) e.preventDefault()
+      }
+    },
+
+    checkCertificateType: function () {
       if (!this.certificateType) {
-        this.errors.push('Certificate Type required.')
-      }
+        this.errors[0] = 'Certificate Type required.'
+      } else { this.errors[0] = '' }
+    },
+    checkSubject: function () {
       if (!this.subject || this.subject === 'Subject') {
-        this.errors.push('Subject required.')
-      }
+        this.errors[1] = 'Subject required.'
+      } else { this.errors[1] = '' }
+    },
+    checkOrganization: function () {
       if (!this.organization) {
-        this.errors.push('Organization required.')
-      }
+        this.errors[2] = 'Organization required.'
+      } else { this.errors[2] = '' }
+    },
+    checkOrganizationUnitName: function () {
       if (!this.organizationUnitName) {
-        this.errors.push('Organization unit name required.')
-      }
+        this.errors[3] = 'Organization unit name required.'
+      } else { this.errors[3] = '' }
+    },
+    checkOrganizationEmail: function () {
       if (!this.organizationEmail) {
-        this.errors.push('Organization email required.')
-      }
+        this.errors[4] = 'Organization email required.'
+      } else { this.errors[4] = '' }
+    },
+    checkCountryCode: function () {
       if (!this.countryCode) {
-        this.errors.push('Country code required.')
-      }
+        this.errors[5] = 'Country code required.'
+      } else { this.errors[5] = '' }
+    },
+    checkDate: function () {
       if (!this.date) {
-        this.errors.push('Date required.')
-      }
-      e.preventDefault()
+        this.errors[6] = 'Date required.'
+      } else { this.errors[6] = '' }
     }
+
   }
 }
 </script>

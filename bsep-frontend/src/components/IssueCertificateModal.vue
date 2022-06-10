@@ -15,16 +15,19 @@
               class="form-select"
               aria-label="Default select example"
               v-model="certificateType"
+              v-on:change="checkCertificateType()"
               style="width: 70%; margin-left: 15%"
             >
               <option selected hidden>Certificate type</option>
               <option value="INTERMEDIATE">INTERMEDIATE</option>
               <option value="END_ENTITY">END ENTITY</option>
             </select>
+            <div style="color:red; margin-left:15%">{{errors[0]}}</div>
             <select
               class="form-select"
               style="width: 70%; margin-top: 1em; margin-left: 15%"
               v-model="subject"
+              v-on:change="checkSubject()"
             >
               <option selected hidden>Subject</option>
               <option
@@ -35,6 +38,7 @@
                 {{ option.username }}
               </option>
             </select>
+            <div style="color:red; margin-left:15%">{{errors[1]}}</div>
             <input
               style="width: 70%; margin-top: 1em; margin-left: 15%"
               type="text"
@@ -42,7 +46,9 @@
               name="login"
               placeholder="Oragnization"
               v-model="organization"
+               v-on:input="checkOrganization()"
             />
+            <div style="color:red; margin-left:15%">{{errors[2]}}</div>
             <input
               style="width: 70%; margin-top: 1em; margin-left: 15%"
               type="text"
@@ -50,7 +56,9 @@
               name="login"
               placeholder="Oragnization unit name"
               v-model="organizationUnitName"
+              v-on:input="checkOrganizationUnitName()"
             />
+            <div style="color:red; margin-left:15%">{{errors[3]}}</div>
             <input
               style="width: 70%; margin-top: 1em; margin-left: 15%"
               type="text"
@@ -58,7 +66,9 @@
               name="orgEmail"
               placeholder="Organization email"
               v-model="organizationEmail"
+              v-on:input="checkOrganizationEmail()"
             />
+            <div style="color:red; margin-left:15%">{{errors[4]}}</div>
             <input
               style="width: 70%; margin-top: 1em; margin-left: 15%"
               type="text"
@@ -66,7 +76,9 @@
               name="orgEmail"
               placeholder="Country code"
               v-model="countryCode"
+              v-on:input="checkCountryCode()"
             />
+             <div style="color:red; margin-left:15%">{{errors[5]}}</div>
             <Datepicker
               :maxDate="issuerExpirationDate"
               :minDate = "(new Date()).setDate((new Date()).getDate()+1)"
@@ -74,7 +86,9 @@
               style="width: 70%; margin-top: 1em; margin-left: 15%"
               class="fadeIn third"
               id="datePicker"
+              @update:modelValue="checkDate()"
             ></Datepicker>
+             <div style="color:red; margin-left:15%">{{errors[6]}}</div>
             <div style="text-align: left; margin-left: 15.5%; margin-top: 3%">
               Key usages:
             </div>
@@ -149,7 +163,8 @@ export default {
       allSubjects: [],
       date: null,
       keyUsages: [],
-      extendedKeyUsages: []
+      extendedKeyUsages: [],
+      errors: []
     }
   },
   mounted: function () {
@@ -177,6 +192,7 @@ export default {
       this.$emit('close')
     },
     createCertificate: function () {
+      this.checkForm()
       const newCertificate = {
         subjectUID: Number(this.subject),
         organization: this.organization,
@@ -194,6 +210,56 @@ export default {
         .then((response) => {
           window.location.reload()
         })
+    },
+    checkForm: function (e) {
+      this.errors = []
+
+      this.checkCertificateType()
+      this.checkSubject()
+      this.checkOrganization()
+      this.checkOrganizationUnitName()
+      this.checkOrganizationEmail()
+      this.checkCountryCode()
+      this.checkDate()
+      for (const element of this.errors) {
+        if (element) e.preventDefault()
+      }
+    },
+
+    checkCertificateType: function () {
+      if (!this.certificateType || this.certificateType === 'Certificate type') {
+        this.errors[0] = 'Certificate Type required.'
+      } else { this.errors[0] = '' }
+    },
+    checkSubject: function () {
+      if (!this.subject || this.subject === 'Subject') {
+        this.errors[1] = 'Subject required.'
+      } else { this.errors[1] = '' }
+    },
+    checkOrganization: function () {
+      if (!this.organization) {
+        this.errors[2] = 'Organization required.'
+      } else { this.errors[2] = '' }
+    },
+    checkOrganizationUnitName: function () {
+      if (!this.organizationUnitName) {
+        this.errors[3] = 'Organization unit name required.'
+      } else { this.errors[3] = '' }
+    },
+    checkOrganizationEmail: function () {
+      if (!this.organizationEmail) {
+        this.errors[4] = 'Organization email required.'
+      } else { this.errors[4] = '' }
+    },
+    checkCountryCode: function () {
+      if (!this.countryCode) {
+        this.errors[5] = 'Country code required.'
+      } else { this.errors[5] = '' }
+    },
+    checkDate: function () {
+      if (!this.date) {
+        this.errors[6] = 'Date required.'
+      } else { this.errors[6] = '' }
     }
   }
 }
