@@ -1,6 +1,6 @@
-root.jks
-intermediate.jks
-endEntity.jks
+.\Bsep\data\keystores\root.jks
+.\Bsep\data\keystores\intermediate.jks
+.\Bsep\data\keystores\endEntity.jks
 
 *.cer
 
