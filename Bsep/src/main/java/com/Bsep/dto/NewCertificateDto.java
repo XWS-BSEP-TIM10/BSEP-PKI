@@ -2,18 +2,27 @@ package com.Bsep.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+
 import com.Bsep.model.CertificatePurposeType;
 import com.Bsep.model.CertificateType;
 
 public class NewCertificateDto {
-
+	
+	@NotBlank(message = "Subject is mandatory")
     private Long subjectUID;
+	@NotBlank(message = "Organization is mandatory")
     private String organization;
+	@NotBlank(message = "Organization unit name is mandatory")
     private String organizationalUnitName;
+	@NotBlank(message = "Organization email is mandatory")
     private String organizationEmail;
+	@NotBlank(message = "Country code is mandatory")
     private String countryCode;
     private String issuerCertificateSerialNumber;
+    @NotBlank(message = "End date is mandatory")
     private String endDate;
+    @NotBlank(message = "Certificate type is mandatory")
     private CertificateType certificateType;
     private List<String> keyUsages;
     private List<String> extendedKeyUsages;

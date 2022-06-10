@@ -1,4 +1,7 @@
-*.jks
+root.jks
+intermediate.jks
+endEntity.jks
+
 *.cer
 
 # Compiled class file
