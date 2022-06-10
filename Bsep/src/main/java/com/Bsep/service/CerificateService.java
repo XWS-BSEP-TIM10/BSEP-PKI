@@ -1,7 +1,9 @@
 package com.Bsep.service;
 
 import com.Bsep.dto.CertificateDto;
+import com.Bsep.dto.CertificateRevocationStatusDTO;
 import com.Bsep.dto.NewCertificateDto;
+import com.Bsep.dto.RevokeCertificateDTO;
 import com.Bsep.model.CertificateData;
 import org.springframework.core.io.Resource;
 
@@ -17,9 +19,9 @@ public interface CerificateService {
 
     List<CertificateDto> getByUsername(String name);
 
-    void revoke(String serialNumber);
+    void revoke(String serialNumber, RevokeCertificateDTO revokeCertificateDTO);
 
-    boolean isRevoked(String serialNumber);
+    CertificateRevocationStatusDTO isRevoked(String serialNumber);
 
     boolean checkIsValid(String serialNumber);
 }

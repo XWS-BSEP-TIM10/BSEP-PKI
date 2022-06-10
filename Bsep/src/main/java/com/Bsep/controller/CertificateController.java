@@ -1,7 +1,9 @@
 package com.Bsep.controller;
 
 import com.Bsep.dto.CertificateDto;
+import com.Bsep.dto.CertificateRevocationStatusDTO;
 import com.Bsep.dto.NewCertificateDto;
+import com.Bsep.dto.RevokeCertificateDTO;
 import com.Bsep.model.CertificateData;
 import com.Bsep.service.impl.CertificateServiceImpl;
 import org.springframework.core.io.Resource;
@@ -67,16 +69,15 @@ public class CertificateController {
 
     @PutMapping(value = "/{serial}/revoke")
     @PreAuthorize("hasAuthority('REVOKE_CERTIFICATE_PERMISSION')")
-    public ResponseEntity<HttpStatus> revoke(@PathVariable String serial) {
-        certificateService.revoke(serial);
+    public ResponseEntity<HttpStatus> revoke(@PathVariable String serial, @RequestBody RevokeCertificateDTO dto) {
+        certificateService.revoke(serial, dto);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/{serial}/status")
     @PreAuthorize("hasAuthority('CHECK_CERTIFICATE_PERMISSION')")
-    public ResponseEntity<Boolean> isRevoked(@PathVariable String serial) {
-        boolean isRevoked = certificateService.isRevoked(serial);
-        return ResponseEntity.ok(isRevoked);
+    public ResponseEntity<CertificateRevocationStatusDTO> isRevoked(@PathVariable String serial) {
+        return ResponseEntity.ok(certificateService.isRevoked(serial));
     }
 
     @GetMapping(value = "/{serial}/valid")

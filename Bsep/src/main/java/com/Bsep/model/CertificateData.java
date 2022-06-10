@@ -51,6 +51,8 @@ public class CertificateData {
 
     @Enumerated(EnumType.ORDINAL)
     private CertificatePurposeType certificatePurposeType;
+    
+    private String revocationReason;
 
 
     public CertificateData() {
@@ -156,4 +158,14 @@ public class CertificateData {
     public Date getEndDate() {
         return endDate;
     }
+
+	public String getRevocationReason() {
+		return revocationReason;
+	}
+
+	public void setRevocationReason(String revocationReason) {
+		this.revocationReason = revocationReason;
+	}
+    
+    
 }

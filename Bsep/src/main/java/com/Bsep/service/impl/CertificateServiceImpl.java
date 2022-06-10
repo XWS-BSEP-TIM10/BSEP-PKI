@@ -2,7 +2,9 @@ package com.Bsep.service.impl;
 
 import com.Bsep.certificate.CertificateGenerator;
 import com.Bsep.dto.CertificateDto;
+import com.Bsep.dto.CertificateRevocationStatusDTO;
 import com.Bsep.dto.NewCertificateDto;
+import com.Bsep.dto.RevokeCertificateDTO;
 import com.Bsep.mapper.CertificateMapper;
 import com.Bsep.model.CertificateData;
 import com.Bsep.model.CertificatePurposeType;
@@ -172,21 +174,24 @@ public class CertificateServiceImpl implements CerificateService {
     }
 
     @Override
-    public void revoke(String serialNumber) {
+    public void revoke(String serialNumber, RevokeCertificateDTO revokeCertificateDTO) {
         CertificateData certificateData = certificateDataRepository.findBySerialNumber(serialNumber);
         certificateData.setCertificateStatus(CertificateStatus.REVOKED);
+        certificateData.setRevocationReason(revokeCertificateDTO.getReason());
         certificateDataRepository.save(certificateData);
         for (CertificateData cert : certificateDataRepository.findByIssuerSerialNumber(certificateData.getSerialNumber())) {
             if (cert.getCertificateType() == CertificateType.ROOT)
                 continue;
-            revoke(cert.getSerialNumber());
+            revoke(cert.getSerialNumber(),revokeCertificateDTO);
         }
     }
 
     @Override
-    public boolean isRevoked(String serialNumber) {
+    public CertificateRevocationStatusDTO isRevoked(String serialNumber) {
         CertificateData certificateData = certificateDataRepository.findBySerialNumber(serialNumber);
-        return certificateData.getCertificateStatus() == CertificateStatus.REVOKED;
+        //return certificateData.getCertificateStatus() == CertificateStatus.REVOKED;
+        return new CertificateRevocationStatusDTO(certificateData.getCertificateStatus() == CertificateStatus.REVOKED, certificateData.getRevocationReason());
+        
     }
 
     @Override

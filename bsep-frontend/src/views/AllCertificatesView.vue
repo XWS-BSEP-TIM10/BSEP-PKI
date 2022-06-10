@@ -125,21 +125,30 @@
     v-bind:issuerCertificateSerialNumber="issuerCertificateSerialNumber"
     v-bind:issuerExpirationDate="issuerExpirationDate"
   />
+  <RevokeCertificateModal
+    v-show="isRevokeModalVisible"
+    @close="closeRevokeModal"
+    v-bind:serialNumber="serialNumber"
+  />
+
 </template>
 
 <script>
 import axios from 'axios'
 import IssueCertificateModal from '@/components/IssueCertificateModal.vue'
+import RevokeCertificateModal from '@/components/RevokeCertificateModal.vue'
 export default {
   name: 'AllCertificatesView',
-  components: { IssueCertificateModal },
+  components: { IssueCertificateModal, RevokeCertificateModal },
   data: function () {
     return {
       isModalVisible: false,
       certificates: [],
       issuerCertificateSerialNumber: '',
       issuerExpirationDate: null,
-      role: ''
+      role: '',
+      isRevokeModalVisible: false,
+      serialNumber: ''
     }
   },
   mounted: function () {
@@ -193,17 +202,8 @@ export default {
       this.isModalVisible = false
     },
     revokeCertificate (serialNumber) {
-      axios.defaults.headers.common.Authorization =
-        'Bearer ' + window.sessionStorage.getItem('jwt')
-      axios
-        .put(
-          'https://localhost:8080/api/v1/certificate/' +
-            serialNumber +
-            '/revoke'
-        )
-        .then(() => {
-          window.location.reload()
-        })
+      this.serialNumber = serialNumber
+      this.showRevokeModal(123, 123)
     },
     isRevoked (serialNumber) {
       axios.defaults.headers.common.Authorization =
@@ -215,12 +215,20 @@ export default {
             '/status'
         )
         .then((response) => {
-          if (response.data) {
-            alert('Certificate is revoked')
+          if (response.data.status) {
+            alert('Certificate is revoked: ' + response.data.revocationReason)
           } else {
             alert('Certifivate is not revoked')
           }
         })
+    },
+    showRevokeModal (serialNumber, expirationDate) {
+      this.issuerExpirationDate = expirationDate
+      this.issuerCertificateSerialNumber = serialNumber
+      this.isRevokeModalVisible = true
+    },
+    closeRevokeModal () {
+      this.isRevokeModalVisible = false
     }
   }
 }
