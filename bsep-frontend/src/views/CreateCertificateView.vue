@@ -7,7 +7,13 @@
   <div class="wrapper fadeInDown" style="margin-top: 1em">
     <div id="formContent">
       <!-- Login Form -->
-      <form style="margin-top: 3em">
+      <form style="margin-top: 3em" @submit="checkForm">
+          <p style="color: red; background-color: white" v-if="errors.length">
+    <b>Please correct the following error(s):</b>
+    <ul v-for="error in errors" :key="error" style="color: red; background-color: white">
+      <li style="margin-left:20%">{{ error }}<br></li><br>
+    </ul>
+  </p>
         <select
           class="browser-default custom-select"
           style="width: 20em"
@@ -148,7 +154,8 @@ export default {
       allSubjects: [],
       date: null,
       keyUsages: [],
-      extendedKeyUsages: []
+      extendedKeyUsages: [],
+      errors: []
     }
   },
   mounted: function () {
@@ -173,6 +180,7 @@ export default {
       return [year, month, day].join('-')
     },
     createCertificate: function () {
+      this.checkForm()
       const newCertificate = {
         subjectUID: Number(this.subject),
         organization: this.organization,
@@ -192,6 +200,32 @@ export default {
         .then((response) => {
           alert('Success')
         })
+    },
+    checkForm: function (e) {
+      this.errors = []
+
+      if (!this.certificateType) {
+        this.errors.push('Certificate Type required.')
+      }
+      if (!this.subject || this.subject === 'Subject') {
+        this.errors.push('Subject required.')
+      }
+      if (!this.organization) {
+        this.errors.push('Organization required.')
+      }
+      if (!this.organizationUnitName) {
+        this.errors.push('Organization unit name required.')
+      }
+      if (!this.organizationEmail) {
+        this.errors.push('Organization email required.')
+      }
+      if (!this.countryCode) {
+        this.errors.push('Country code required.')
+      }
+      if (!this.date) {
+        this.errors.push('Date required.')
+      }
+      e.preventDefault()
     }
   }
 }
