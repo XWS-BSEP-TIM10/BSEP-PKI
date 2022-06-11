@@ -6,16 +6,66 @@
                     pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
         </Console>
 
-        <File name="File" fileName="MyApp.log">
+        <File name="DebugFile" fileName="logs/debug.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
+            <Filters>
+                <ThresholdFilter level="warn"  onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info"  onMatch="DENY" onMismatch="NEUTRAL"/>
+
+                <ThresholdFilter level="debug"  onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
+        <File name="InfoFile" fileName="logs/info.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
+            <Filters>
+                <ThresholdFilter level="warn"  onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+
+                <ThresholdFilter level="info"  onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
+        <File name="WarnFile" fileName="logs/warn.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+
+                <ThresholdFilter level="warn"  onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
+        <File name="ErrorFile" fileName="logs/error.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
+            <Filters>
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+
+                <ThresholdFilter level="error"  onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
+        <File name="FatalFile" fileName="logs/fatal.log">
             <PatternLayout
                     pattern="%d{yyyy-MMM-dd HH:mm:ss} [%t] %-5level %-50c{1.} - %msg%n" />
         </File>
     </Appenders>
 
     <Loggers>
-        <Root level="info">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="File" />
+        <Root level="debug">
+            <AppenderRef ref="Console" level="info"/>
+            <AppenderRef ref="DebugFile" level = "debug"/>
+            <AppenderRef ref="InfoFile" level = "info"/>
+            <AppenderRef ref="WarnFile" level = "warn"/>
+            <AppenderRef ref="ErrorFile" level = "error"/>
+            <AppenderRef ref="FatalFile" level = "fatal"/>
         </Root>
     </Loggers>
 </Configuration>
