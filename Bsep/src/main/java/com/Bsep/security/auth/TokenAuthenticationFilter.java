@@ -65,6 +65,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 						TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
 						authentication.setToken(authToken);
 						SecurityContextHolder.getContext().setAuthentication(authentication);
+
 					}
 				}
 			}

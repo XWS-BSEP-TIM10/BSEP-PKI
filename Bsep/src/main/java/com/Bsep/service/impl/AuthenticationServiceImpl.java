@@ -23,8 +23,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public TokenDTO login(String username, String password) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                username, password));
+        Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    username, password));
+        }catch(Exception ex){
+            return null;
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = (User) authentication.getPrincipal();
         return new TokenDTO(getToken(user), user.getRoles().get(0).getName());

@@ -50,7 +50,7 @@
 
         <td>{{ cert.organizationalUnitName }}</td>
       </tr>
-      <tr v-bind:class = "(cert.status=='VALID')?'green':'red'">
+      <tr v-bind:class="cert.status == 'VALID' ? 'green' : 'red'">
         <th>Certificate status:</th>
         <td>{{ cert.status }}</td>
         <th>Issuer common name</th>
@@ -65,7 +65,7 @@
             style="
               background-color: rgb(3, 20, 50);
               border-color: rgb(3, 20, 50);
-              width: 100%
+              width: 100%;
             "
             v-on:click="isRevoked(cert.serialNumber)"
           >
@@ -79,7 +79,7 @@
             style="
               background-color: rgb(3, 20, 50);
               border-color: rgb(3, 20, 50);
-              width: 70%
+              width: 70%;
             "
             v-if="cert.status != 'REVOKED' && role === 'ROLE_ADMIN'"
             v-on:click="revokeCertificate(cert.serialNumber)"
@@ -96,7 +96,9 @@
               border-color: rgb(3, 20, 50);
             "
             v-on:click="showModal(cert.serialNumber, cert.endDate)"
-            v-if="cert.certificateType != 'END_ENTITY' && cert.status == 'VALID'"
+            v-if="
+              cert.certificateType != 'END_ENTITY' && cert.status == 'VALID'
+            "
           >
             Issue certificate
           </button>
@@ -130,108 +132,116 @@
     @close="closeRevokeModal"
     v-bind:serialNumber="serialNumber"
   />
-
 </template>
 
 <script>
-import axios from 'axios'
-import IssueCertificateModal from '@/components/IssueCertificateModal.vue'
-import RevokeCertificateModal from '@/components/RevokeCertificateModal.vue'
+import axios from "axios";
+import IssueCertificateModal from "@/components/IssueCertificateModal.vue";
+import RevokeCertificateModal from "@/components/RevokeCertificateModal.vue";
 export default {
-  name: 'AllCertificatesView',
+  name: "AllCertificatesView",
   components: { IssueCertificateModal, RevokeCertificateModal },
   data: function () {
     return {
       isModalVisible: false,
       certificates: [],
-      issuerCertificateSerialNumber: '',
+      issuerCertificateSerialNumber: "",
       issuerExpirationDate: null,
-      role: '',
+      role: "",
       isRevokeModalVisible: false,
-      serialNumber: ''
-    }
+      serialNumber: "",
+    };
   },
   mounted: function () {
-    const jwtToken = window.sessionStorage.getItem('jwt')
+    const jwtToken = window.sessionStorage.getItem("jwt");
     if (jwtToken) {
-      const tokenSplit = jwtToken.split('.')
-      const decoded = decodeURIComponent(escape(window.atob(tokenSplit[1])))
-      const obj = JSON.parse(decoded)
-      console.log(obj.role)
-      this.role = obj.role
+      const tokenSplit = jwtToken.split(".");
+      const decoded = decodeURIComponent(escape(window.atob(tokenSplit[1])));
+      const obj = JSON.parse(decoded);
+      console.log(obj.role);
+      this.role = obj.role;
     }
 
-    if (this.role == null) this.role = ''
+    if (this.role == null) this.role = "";
+    else if (this.role == "ROLE_USER") {
+      axios.defaults.headers.common.Authorization =
+        "Bearer " + window.sessionStorage.getItem("jwt");
+      axios
+        .get("https://localhost:8080/api/v1/certificate")
+        .then((response) => {
+          this.certificates = response.data;
+        });
+    }
     axios.defaults.headers.common.Authorization =
-      'Bearer ' + window.sessionStorage.getItem('jwt')
-    axios.get('https://localhost:8080/api/v1/certificate').then((response) => {
-      this.certificates = response.data
-    })
+      "Bearer " + window.sessionStorage.getItem("jwt");
+    axios.get("https://localhost:8080/api/v1/certificate/all").then((response) => {
+      this.certificates = response.data;
+    });
   },
   methods: {
     formatDate: function (date) {
-      const d = new Date(date)
-      let month = '' + (d.getMonth() + 1)
-      let day = '' + d.getDate()
-      const year = d.getFullYear()
+      const d = new Date(date);
+      let month = "" + (d.getMonth() + 1);
+      let day = "" + d.getDate();
+      const year = d.getFullYear();
 
-      if (month.length < 2) month = '0' + month
-      if (day.length < 2) day = '0' + day
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
 
-      return [year, month, day].join('-')
+      return [year, month, day].join("-");
     },
-    showModal (serialNumber, expirationDate) {
-      this.issuerExpirationDate = expirationDate
-      this.issuerCertificateSerialNumber = serialNumber
-      this.isModalVisible = true
+    showModal(serialNumber, expirationDate) {
+      this.issuerExpirationDate = expirationDate;
+      this.issuerCertificateSerialNumber = serialNumber;
+      this.isModalVisible = true;
     },
-    downloadCertificate (id) {
+    downloadCertificate(id) {
       axios.defaults.headers.common.Authorization =
-        'Bearer ' + window.sessionStorage.getItem('jwt')
+        "Bearer " + window.sessionStorage.getItem("jwt");
       axios
-        .get('https://localhost:8080/api/v1/certificate/' + id + '/download')
+        .get("https://localhost:8080/api/v1/certificate/" + id + "/download")
         .then((response) => {
           const blob = new Blob([response.data], {
-            type: 'application/x-x509-ca-cert'
-          })
-          const url = window.URL.createObjectURL(blob)
-          window.open(url)
-        })
+            type: "application/x-x509-ca-cert",
+          });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url);
+        });
     },
-    closeModal () {
-      this.isModalVisible = false
+    closeModal() {
+      this.isModalVisible = false;
     },
-    revokeCertificate (serialNumber) {
-      this.serialNumber = serialNumber
-      this.showRevokeModal(123, 123)
+    revokeCertificate(serialNumber) {
+      this.serialNumber = serialNumber;
+      this.showRevokeModal(123, 123);
     },
-    isRevoked (serialNumber) {
+    isRevoked(serialNumber) {
       axios.defaults.headers.common.Authorization =
-        'Bearer ' + window.sessionStorage.getItem('jwt')
+        "Bearer " + window.sessionStorage.getItem("jwt");
       axios
         .get(
-          'https://localhost:8080/api/v1/certificate/' +
+          "https://localhost:8080/api/v1/certificate/" +
             serialNumber +
-            '/status'
+            "/status"
         )
         .then((response) => {
           if (response.data.status) {
-            alert('Certificate is revoked: ' + response.data.revocationReason)
+            alert("Certificate is revoked: " + response.data.revocationReason);
           } else {
-            alert('Certifivate is not revoked')
+            alert("Certifivate is not revoked");
           }
-        })
+        });
     },
-    showRevokeModal (serialNumber, expirationDate) {
-      this.issuerExpirationDate = expirationDate
-      this.issuerCertificateSerialNumber = serialNumber
-      this.isRevokeModalVisible = true
+    showRevokeModal(serialNumber, expirationDate) {
+      this.issuerExpirationDate = expirationDate;
+      this.issuerCertificateSerialNumber = serialNumber;
+      this.isRevokeModalVisible = true;
     },
-    closeRevokeModal () {
-      this.isRevokeModalVisible = false
-    }
-  }
-}
+    closeRevokeModal() {
+      this.isRevokeModalVisible = false;
+    },
+  },
+};
 </script>
 <style scoped src="@/css/Admin.css"></style>
 <style scoped src="@/css/Login.css"></style>

@@ -32,6 +32,8 @@ INSERT INTO permission(id, name)
 VALUES (5, 'CHECK_CERTIFICATE_PERMISSION');
 INSERT INTO permission(id, name)
 VALUES (6, 'GET_USERS_PERMISSION');
+INSERT INTO permission(id, name)
+VALUES (7, 'GET_ALL_CERTIFICATES_PERMISSION');
 
 INSERT INTO roles_permissions(role_id, permission_id)
 VALUES (1, 1);
@@ -40,7 +42,7 @@ VALUES (2, 1);
 INSERT INTO roles_permissions(role_id, permission_id)
 VALUES (1, 2);
 INSERT INTO roles_permissions(role_id, permission_id)
-VALUES (2, 2);
+VALUES (2, 7);
 INSERT INTO roles_permissions(role_id, permission_id)
 VALUES (1, 3);
 INSERT INTO roles_permissions(role_id, permission_id)

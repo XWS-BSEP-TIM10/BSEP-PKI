@@ -5,6 +5,7 @@ import com.Bsep.dto.TokenDTO;
 import com.Bsep.service.AuthenticationService;
 import com.Bsep.service.LoggerService;
 import com.Bsep.service.impl.LoggerServiceImpl;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +29,12 @@ public class AuthenticationController {
     @PostMapping(value = "/login")
     public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginDTO loginDTO) {
         TokenDTO tokenDTO = authenticationService.login(loginDTO.getUsername(), loginDTO.getPassword());
-        loggerService.loginSuccess(loginDTO.getUsername());
-        return ResponseEntity.ok(tokenDTO);
+        if(tokenDTO != null) {
+            loggerService.loginSuccess(loginDTO.getUsername());
+            return ResponseEntity.ok(tokenDTO);
+        }
+        loggerService.loginFailed(loginDTO.getUsername());
+        return ResponseEntity.badRequest().build();
     }
     
 }
