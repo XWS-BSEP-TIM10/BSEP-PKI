@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -27,13 +28,13 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginDTO loginDTO) {
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginDTO loginDTO, HttpServletRequest request) {
         TokenDTO tokenDTO = authenticationService.login(loginDTO.getUsername(), loginDTO.getPassword());
         if(tokenDTO != null) {
-            loggerService.loginSuccess(loginDTO.getUsername());
+            loggerService.loginSuccess(loginDTO.getUsername(), request.getRemoteAddr());
             return ResponseEntity.ok(tokenDTO);
         }
-        loggerService.loginFailed(loginDTO.getUsername());
+        loggerService.loginFailed(loginDTO.getUsername(), request.getRemoteAddr());
         return ResponseEntity.badRequest().build();
     }
     

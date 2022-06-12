@@ -11,13 +11,13 @@ public class LoggerServiceImpl implements LoggerService {
     public LoggerServiceImpl(Class<?> parentClass) {this.logger = LogManager.getLogger(parentClass); }
 
     @Override
-    public void loginSuccess(String username) {
-        logger.info("Login successful. Username: {}" + username);
+    public void loginSuccess(String username, String ip) {
+        logger.info("Login successful. Username: {} From: {}", username, ip);
     }
 
     @Override
-    public void loginFailed(String username) {
-        logger.warn("Login failed. Username: {}", username);
+    public void loginFailed(String username, String ip) {
+        logger.warn("Login failed. Username: {} From: {}", username, ip);
     }
 
     @Override
@@ -68,6 +68,11 @@ public class LoggerServiceImpl implements LoggerService {
     @Override
     public void getAllUsers(String username) {
         logger.info("All users successfully gotten. Username: {}", username);
+    }
+
+    @Override
+    public void unauthorizedAccess(String method, String path, String ip) {
+        logger.warn("Unauthorized access to {}: {}. From: {}", method, path, ip);
     }
 
 }

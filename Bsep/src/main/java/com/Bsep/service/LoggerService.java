@@ -1,8 +1,8 @@
 package com.Bsep.service;
 
 public interface LoggerService {
-    void loginSuccess(String username);
-    void loginFailed(String username);
+    void loginSuccess(String username, String ip);
+    void loginFailed(String username, String ip);
     void certificateCreated(String issuerUsername, String subjectUsername);
     void certificateCreatingFailed(String issuerUsername, String subjectUsername);
     void allCertificates(String username);
@@ -12,5 +12,6 @@ public interface LoggerService {
     void certificateRevokingSuccess(String username, String certSerial);
     void checkIfCertificateIsRevoked(String username, String certSerial);
     void checkIfCertificateIsValid(String username, String certSerial);
+    void unauthorizedAccess(String method, String path, String ip);
     void getAllUsers(String username);
 }
