@@ -78,14 +78,14 @@ public class CertificateController {
             String contentType = "application/octet-stream";
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Disposition", "attachment; filename=\"" + resource.getFilename() + "\"");
-            loggerService.certificateDownloadSuccess(SecurityContextHolder.getContext().getAuthentication().getName());
+            loggerService.certificateDownloadSuccess(SecurityContextHolder.getContext().getAuthentication().getName(), id);
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
                     .headers(headers)
                     .body(resource);
         } catch (Exception e) {
             e.printStackTrace();
-            loggerService.certificateDownloadFailed(SecurityContextHolder.getContext().getAuthentication().getName());
+            loggerService.certificateDownloadFailed(SecurityContextHolder.getContext().getAuthentication().getName(), id);
             return ResponseEntity.badRequest().build();
         }
     }
@@ -94,14 +94,14 @@ public class CertificateController {
     @PreAuthorize("hasAuthority('REVOKE_CERTIFICATE_PERMISSION')")
     public ResponseEntity<HttpStatus> revoke(@PathVariable String serial, @RequestBody RevokeCertificateDTO dto) {
         certificateService.revoke(serial, dto);
-        loggerService.certificateRevokingSuccess(SecurityContextHolder.getContext().getAuthentication().getName());
+        loggerService.certificateRevokingSuccess(SecurityContextHolder.getContext().getAuthentication().getName(), serial);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/{serial}/status")
     @PreAuthorize("hasAuthority('CHECK_CERTIFICATE_PERMISSION')")
     public ResponseEntity<CertificateRevocationStatusDTO> isRevoked(@PathVariable String serial) {
-        loggerService.checkIfCertificateIsRevoked(SecurityContextHolder.getContext().getAuthentication().getName());
+        loggerService.checkIfCertificateIsRevoked(SecurityContextHolder.getContext().getAuthentication().getName(), serial);
         return ResponseEntity.ok(certificateService.isRevoked(serial));
     }
 
@@ -109,7 +109,7 @@ public class CertificateController {
     @PreAuthorize("hasAuthority('CHECK_CERTIFICATE_PERMISSION')")
     public ResponseEntity<Boolean> isValid(@PathVariable String serial) {
         boolean isValid = certificateService.checkIsValid(serial);
-        loggerService.checkIfCertificateIsValid(SecurityContextHolder.getContext().getAuthentication().getName());
+        loggerService.checkIfCertificateIsValid(SecurityContextHolder.getContext().getAuthentication().getName(), serial);
         return ResponseEntity.ok(isValid);
     }
 }

@@ -11,63 +11,63 @@ public class LoggerServiceImpl implements LoggerService {
     public LoggerServiceImpl(Class<?> parentClass) {this.logger = LogManager.getLogger(parentClass); }
 
     @Override
-    public void loginSuccess(String email) {
-        logger.info("Login successful. Email: " + email);
+    public void loginSuccess(String username) {
+        logger.info("Login successful. Username: {}" + username);
     }
 
     @Override
-    public void loginFailed(String email) {
-        logger.warn("Login failed. Email: " + email);
+    public void loginFailed(String username) {
+        logger.warn("Login failed. Username: {}", username);
     }
 
     @Override
-    public void certificateCreated(String issuerEmail, String subjectEmail) {
-        logger.info("Certificate created. Issuer: " + issuerEmail +  " Subject: " + subjectEmail);
+    public void certificateCreated(String issuerUsername, String subjectUsername) {
+        logger.info("Certificate created. Issuer username: {} Subject username: {} ", issuerUsername, subjectUsername);
     }
 
     @Override
-    public void certificateCreatingFailed(String issuerEmail, String subjectEmail) {
-        logger.warn("Certificate creation failed. Issuer: " + issuerEmail +  " Subject: " + subjectEmail);
+    public void certificateCreatingFailed(String issuerUsername, String subjectUsername) {
+        logger.warn("Certificate creation failed. Issuer username: {} Subject username: {}", issuerUsername, subjectUsername);
     }
 
     @Override
-    public void allCertificates(String userEmail) {
-        logger.info("All certificates pulled from keystore. Email: " + userEmail);
+    public void allCertificates(String username) {
+        logger.info("All certificates pulled from keystore. Username: {}", username);
     }
 
     @Override
-    public void userCertificates(String userEmail) {
-        logger.info("User certificates pulled from keystore. Email: " + userEmail);
+    public void userCertificates(String username) {
+        logger.info("User certificates pulled from keystore. Username: {}", username);
     }
 
     @Override
-    public void certificateDownloadSuccess(String userEmail) {
-        logger.info("Certificate downloaded successfully. Email: " + userEmail);
+    public void certificateDownloadSuccess(String username, Long certId) {
+        logger.info("Certificate downloaded successfully. Username: {} Certificate id: {}", username, certId);
     }
 
     @Override
-    public void certificateDownloadFailed(String userEmail) {
-        logger.warn("Certificate download failed. Email: " + userEmail);
+    public void certificateDownloadFailed(String username, Long certId) {
+        logger.warn("Certificate download failed. Username: {} Certificate id: {}", username, certId);
     }
 
     @Override
-    public void certificateRevokingSuccess(String userEmail) {
-        logger.info("Certificate revoked successfully. Email: " + userEmail);
+    public void certificateRevokingSuccess(String username, String certSerial) {
+        logger.info("Certificate revoked successfully. Username: {} Certificate serial number: {}", username, certSerial);
     }
 
     @Override
-    public void checkIfCertificateIsRevoked(String userEmail) {
-        logger.info("User with email: " + userEmail + " checked if certificate is revoked");
+    public void checkIfCertificateIsRevoked(String username, String certSerial) {
+        logger.info("Certificate status checked successfully. Username: {} Certificate serial number: {}", username, certSerial);
     }
 
     @Override
-    public void checkIfCertificateIsValid(String userEmail) {
-        logger.info("User with email: " + userEmail + " checked if certificate is valid");
+    public void checkIfCertificateIsValid(String username, String certSerial) {
+        logger.info("Certificate validity checked successfully: Username: {} Certificate serial number: {}", username, certSerial);
     }
 
     @Override
-    public void getAllUsers(String userEmail) {
-        logger.info("User with email: " + userEmail + " has gotten all users");
+    public void getAllUsers(String username) {
+        logger.info("All users successfully gotten. Username: {}", username);
     }
 
 }
