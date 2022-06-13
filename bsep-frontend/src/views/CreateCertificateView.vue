@@ -205,7 +205,7 @@ export default {
         .post('https://localhost:8080/api/v1/certificate/create', newCertificate)
         .then((response) => {
           alert('Success')
-           this.$router.push('/all-certificates-page')
+          this.$router.push('/all-certificates-page')
         })
     },
     checkForm: function (e) {
