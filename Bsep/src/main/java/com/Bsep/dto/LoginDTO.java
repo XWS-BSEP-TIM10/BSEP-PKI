@@ -7,6 +7,8 @@ public class LoginDTO {
     private String username;
     @NotBlank(message = "Password is mandatory")
     private String password;
+    
+    private String code;
 
     public String getUsername() {
         return username;
@@ -14,5 +16,9 @@ public class LoginDTO {
 
     public String getPassword() {
         return password;
+    }
+    
+    public String getCode() {
+        return code;
     }
 }

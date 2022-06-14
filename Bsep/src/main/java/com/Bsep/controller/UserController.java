@@ -1,6 +1,8 @@
 package com.Bsep.controller;
 
+import com.Bsep.dto.Change2FAStatusDTO;
 import com.Bsep.dto.ChangePasswordDTO;
+import com.Bsep.dto.TwoFactorAuthenticationDTO;
 import com.Bsep.exception.UserNotFoundException;
 import com.Bsep.exception.WrongPasswordException;
 import com.Bsep.model.User;
@@ -53,5 +55,27 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
     }
+    
+    @GetMapping("/2fa-status")
+    @PreAuthorize("hasAuthority('GET_2FA_STATUS_PERMISSION')")
+    public ResponseEntity<?> get2FAStatus() {
+       String username = SecurityContextHolder.getContext().getAuthentication().getName();
+       User user = userService.findByUsername(username);
+        return new ResponseEntity<>(new TwoFactorAuthenticationDTO(user.isUsing2FA(),user.getSecret()), HttpStatus.OK);
+    }
+    
+    @PutMapping("/2fa-status")
+    @PreAuthorize("hasAuthority('CHANGE_2FA_STATUS_PERMISSION')")
+    public ResponseEntity<?> change2FAStatus(@RequestBody Change2FAStatusDTO change2faStatusDTO) {
+        try {
+        	String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userService.change2FAStatus(username, change2faStatusDTO.getIsEnabled());
+            return ResponseEntity.ok().build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    
 
 }

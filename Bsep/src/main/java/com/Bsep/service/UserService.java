@@ -12,4 +12,5 @@ public interface UserService {
     User findByUsername(String username);
     List<User> findAll ();
     User changePassword(ChangePasswordDTO changePasswordDTO, String username) throws WrongPasswordException;
+    User change2FAStatus(String username, Boolean isEnabled);
 }

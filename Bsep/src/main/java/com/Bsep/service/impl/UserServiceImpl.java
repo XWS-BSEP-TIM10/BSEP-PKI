@@ -59,5 +59,13 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwordEncoder.encode(newPassword));
 		return userRepository.save(user);
 	}
-
+	
+	@Override
+	public User change2FAStatus(String username, Boolean isEnabled) {
+		User user = findByUsername(username);
+		if(user == null)
+			throw new UserNotFoundException();
+		user.setUsing2FA(isEnabled);
+		return userRepository.save(user);
+	}
 }

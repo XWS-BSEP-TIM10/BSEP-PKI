@@ -1,6 +1,25 @@
 <template>
+
 <div class="wrapper fadeInDown">
-    <div id="formContent" style="margin-top: 10%; margin-bottom: 20.25%">
+    <div id="formContent" style="margin-top: 5%;">
+      <div class="form-group form-check" style="padding-top:2em">
+                    <input v-model="using2FA" formControlName="dislinkt" type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-left: 10%;  padding: 2.3%; margin-top: 2%;">
+                    <label class="form-check-label" for="exampleCheck1" style="margin-top: 2%">Enabled two-factor authentication </label>
+                    <div v-if="using2FA" style="padding:1em">
+                        <label>{{secret}}</label>
+                    </div>
+                     <input
+          type="button"
+          class="fadeIn fourth"
+          value="Save"
+          style="background-color: rgb(3, 20, 50);margin-top:2em"
+          v-on:click="change2FAStatus()"
+        />
+                </div>
+   </div>
+  </div>
+<div class="wrapper fadeInDown">
+    <div id="formContent" style=" margin-bottom: 10.25%">
       <!-- Login Form -->
       <form style="margin-top: 10%;">
         <input
@@ -55,10 +74,20 @@ export default {
       errors: [],
       passwordStrength: '',
       strengthClass: '',
-      divId: ''
+      divId: '',
+      using2FA: false,
+      secret: ''
     }
   },
   mounted: function () {
+    axios.defaults.headers.common.Authorization =
+        'Bearer ' + window.sessionStorage.getItem('jwt')
+    axios
+      .get('https://localhost:8080/api/v1/users/2fa-status')
+      .then((response) => {
+        this.using2FA = response.data.isEnabled
+        this.secret = response.data.secret
+      })
   },
   methods: {
     changePassword: function (e) {
@@ -98,6 +127,20 @@ export default {
         default: { this.strengthClass = 'alert alert-success'; strength = 'Strong'; this.divId = 'strongStrength'; break }
       }
       this.passwordStrength = 'Strength: ' + strength + ' ' + result.feedback.warning + '. ' + result.feedback.suggestions
+    },
+    change2FAStatus () {
+      axios.defaults.headers.common.Authorization =
+        'Bearer ' + window.sessionStorage.getItem('jwt')
+      axios
+        .put('https://localhost:8080/api/v1/users/2fa-status', { isEnabled: this.using2FA })
+        .then((response) => {
+          alert('Success')
+          this.$router.push('/all-certificates-page')
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('Something went wrong. ')
+        })
     }
   }
 }
