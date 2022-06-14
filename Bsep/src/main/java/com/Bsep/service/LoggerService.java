@@ -5,6 +5,8 @@ public interface LoggerService {
     void loginFailed(String username, String ip);
     void certificateCreated(String issuerUsername, String subjectUsername);
     void certificateCreatingFailed(String issuerUsername, String subjectUsername);
+    void passwordChanged(String username);
+    void passwordChangingFailed(String message, String username);
     void allCertificates(String username);
     void userCertificates(String username);
     void certificateDownloadSuccess(String username, Long certId);

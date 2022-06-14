@@ -34,6 +34,9 @@ INSERT INTO permission(id, name)
 VALUES (6, 'GET_USERS_PERMISSION');
 INSERT INTO permission(id, name)
 VALUES (7, 'GET_ALL_CERTIFICATES_PERMISSION');
+INSERT INTO permission(id, name)
+VALUES (8, 'CHANGE_PASSWORD_PERMISSION');
+
 
 INSERT INTO roles_permissions(role_id, permission_id)
 VALUES (1, 1);
@@ -57,3 +60,7 @@ INSERT INTO roles_permissions(role_id, permission_id)
 VALUES (1, 6);
 INSERT INTO roles_permissions(role_id, permission_id)
 VALUES (2, 6);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (1, 8);
+INSERT INTO roles_permissions(role_id, permission_id)
+VALUES (2, 8);

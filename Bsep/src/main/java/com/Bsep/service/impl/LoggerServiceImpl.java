@@ -75,4 +75,12 @@ public class LoggerServiceImpl implements LoggerService {
         logger.warn("Unauthorized access to {}: {}. From: {}", method, path, ip);
     }
 
+    public void passwordChanged(String username) {
+        logger.info("Password successfully changed. Username: {}", username);
+    }
+
+    public void passwordChangingFailed(String message, String username) {
+        logger.warn("Password changing failed: {}. Email: {}", message, username);
+    }
+
 }

@@ -1,10 +1,15 @@
 package com.Bsep.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.Bsep.dto.ChangePasswordDTO;
+import com.Bsep.exception.UserNotFoundException;
+import com.Bsep.exception.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +45,19 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll();
 	}
 
+	@Override
+	public User changePassword(ChangePasswordDTO changePasswordDTO, String username) throws WrongPasswordException {
+		User user = findByUsername(username);
+		if(user == null)
+			throw new UserNotFoundException();
+		if(!BCrypt.checkpw(changePasswordDTO.getOldPassword(), user.getPassword()))
+			throw new WrongPasswordException();
+		return changePassword(user, changePasswordDTO.getNewPassword());
+	}
+
+	public User changePassword(User user, String newPassword) {
+		user.setPassword(passwordEncoder.encode(newPassword));
+		return userRepository.save(user);
+	}
 
 }

@@ -36,6 +36,12 @@ const routes = [
     name: '',
     beforeEnter: guardMyroute,
     component: () => import(/* webpackChunkName: "about" */ '../views/AllCertificatesView.vue')
+  },
+  {
+    path: '/change-password-page',
+    name: '',
+    beforeEnter: guardMyroute,
+    component: () => import(/* webpackChunkName: "about" */ '../views/ChangePasswordView.vue')
   }
 ]
 

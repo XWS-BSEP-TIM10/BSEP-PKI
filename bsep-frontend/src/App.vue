@@ -2,6 +2,7 @@
   <div class="background">
     <ul v-if="role !== ''">
       <li><a class="active" href="/all-certificates-page">Certificates</a></li>
+       <li><a class="active" href="/change-password-page">Change password</a></li>
       <li v-if="role === 'ROLE_ADMIN'">
         <a href="/create-certificate-page">Create root certificate</a>
       </li>

@@ -16,7 +16,9 @@
     "nodejs-base64": "^2.0.0",
     "vue": "^3.2.13",
     "vue-multiselect": "^2.1.6",
-    "vue-router": "^4.0.3"
+    "vue-password-strength-meter": "^1.7.2",
+    "vue-router": "^4.0.3",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",

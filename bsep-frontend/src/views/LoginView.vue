@@ -17,6 +17,7 @@
           placeholder="password"
           v-model="password"
         />
+        <div style="color:red">{{error}}</div>
         <input
           type="button"
           class="fadeIn fourth"
@@ -37,7 +38,8 @@ export default {
   data: function () {
     return {
       username: '',
-      password: ''
+      password: '',
+      error: ''
     }
   },
   mounted: function () {},
@@ -50,8 +52,12 @@ export default {
       axios
         .post('https://localhost:8080/api/v1/auth/login', user)
         .then((response) => {
+          this.error = ''
           window.sessionStorage.setItem('jwt', response.data.jwt)
           this.$router.push('/all-certificates-page')
+        }).catch((err) => {
+          console.log(err)
+          this.error = 'Oops! The username and password combination is incorrect. Please try again!'
         })
     }
   }
