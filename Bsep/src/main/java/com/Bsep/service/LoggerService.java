@@ -16,4 +16,10 @@ public interface LoggerService {
     void checkIfCertificateIsValid(String username, String certSerial);
     void unauthorizedAccess(String method, String path, String ip);
     void getAllUsers(String username);
+    void get2FAStatus (String username);
+    void change2FAStatus (String username, Boolean isEnabled);
+    void change2FAStatusFailed (String username);
+    void loginFailedCodeNotMatching (String username, String ip);
+    void login2FACheck (String username, String ip);
+    void login2FACheckFailed (String username, String ip);
 }

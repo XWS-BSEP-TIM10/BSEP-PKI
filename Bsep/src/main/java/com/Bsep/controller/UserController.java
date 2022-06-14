@@ -61,17 +61,21 @@ public class UserController {
     public ResponseEntity<?> get2FAStatus() {
        String username = SecurityContextHolder.getContext().getAuthentication().getName();
        User user = userService.findByUsername(username);
-        return new ResponseEntity<>(new TwoFactorAuthenticationDTO(user.isUsing2FA(),user.getSecret()), HttpStatus.OK);
+       loggerService.get2FAStatus(username);
+       return new ResponseEntity<>(new TwoFactorAuthenticationDTO(user.isUsing2FA(),user.getSecret()), HttpStatus.OK);
     }
     
     @PutMapping("/2fa-status")
     @PreAuthorize("hasAuthority('CHANGE_2FA_STATUS_PERMISSION')")
     public ResponseEntity<?> change2FAStatus(@RequestBody Change2FAStatusDTO change2faStatusDTO) {
+    	String username = "";
         try {
-        	String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            User user = userService.change2FAStatus(username, change2faStatusDTO.getIsEnabled());
+        	username = SecurityContextHolder.getContext().getAuthentication().getName();
+            userService.change2FAStatus(username, change2faStatusDTO.getIsEnabled());
+            loggerService.change2FAStatus(username, change2faStatusDTO.getIsEnabled());
             return ResponseEntity.ok().build();
         } catch (UserNotFoundException e) {
+        	loggerService.change2FAStatusFailed(username);
             return ResponseEntity.notFound().build();
         }
     }

@@ -41,6 +41,7 @@ public class AuthenticationController {
         return ResponseEntity.badRequest().build();
     	}
     	catch(CodeNotMatchingException codeNotMatchingException){
+    		loggerService.loginFailedCodeNotMatching(loginDTO.getUsername(),  request.getRemoteAddr());
     		return ResponseEntity.status(300).build();
     	}
     }
@@ -49,8 +50,10 @@ public class AuthenticationController {
     public ResponseEntity<Boolean> login2FACheck(@RequestBody @Valid LoginDTO loginDTO, HttpServletRequest request) {
         Boolean isEnabled2FA = authenticationService.check2FA(loginDTO.getUsername(), loginDTO.getPassword());
         if(isEnabled2FA != null) {
+        	loggerService.login2FACheck(loginDTO.getUsername(), request.getRemoteAddr());
             return ResponseEntity.ok(isEnabled2FA);
         }
+        loggerService.login2FACheckFailed(loginDTO.getUsername(), request.getRemoteAddr());
         return ResponseEntity.badRequest().build();
     
     }

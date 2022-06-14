@@ -74,13 +74,45 @@ public class LoggerServiceImpl implements LoggerService {
     public void unauthorizedAccess(String method, String path, String ip) {
         logger.warn("Unauthorized access to {}: {}. From: {}", method, path, ip);
     }
-
+    
+    @Override
     public void passwordChanged(String username) {
         logger.info("Password successfully changed. Username: {}", username);
     }
-
+    
+    @Override
     public void passwordChangingFailed(String message, String username) {
         logger.warn("Password changing failed: {}. Email: {}", message, username);
+    }
+    
+    @Override
+    public void get2FAStatus(String username) {
+        logger.info("Gotten two-factor authentication status. Username: {}", username);
+    }
+    
+    @Override
+    public void change2FAStatus(String username, Boolean isEnabled) {
+        logger.warn("Two-factor authentication status changed on: {}. Username: {}",isEnabled, username);
+    }
+    
+    @Override
+    public void change2FAStatusFailed(String username) {
+        logger.info("Two-factor authentication status change failure. Username: {}", username);
+    }
+    
+    @Override
+    public void loginFailedCodeNotMatching(String username, String ip) {
+        logger.warn("Login failed, invalid code. Username: {} From: {}", username, ip);
+    }
+    
+    @Override
+    public void login2FACheck(String username, String ip) {
+        logger.info("Two-factor authentication status check done. Username: {} From: {}", username, ip);
+    }
+    
+    @Override
+    public void login2FACheckFailed(String username, String ip) {
+        logger.warn("Login failed. Username: {} From: {}", username, ip);
     }
 
 }
