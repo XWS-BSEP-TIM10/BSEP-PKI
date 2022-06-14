@@ -16,7 +16,9 @@
           name="newPassword"
           placeholder="New password"
           v-model="newPassword"
+          v-on:input="checkPassword()"
         />
+        <div v-bind:id="divId">{{passwordStrength}}</div>
          <input
           type="password"
           class="fadeIn third"
@@ -32,6 +34,7 @@
           value="Change password"
           style="background-color: rgb(3, 20, 50)"
           v-on:click="changePassword()"
+          :disabled="divId === 'weakStrength'"
         />
       </form>
     </div>
@@ -40,6 +43,7 @@
 
 <script>
 import axios from 'axios'
+import zxcvbn from 'zxcvbn'
 export default {
   name: 'ChangePasword',
   components: { },
@@ -48,7 +52,10 @@ export default {
       oldPassword: '',
       newPassword: '',
       repeatedNewPassword: '',
-      errors: []
+      errors: [],
+      passwordStrength: '',
+      strengthClass: '',
+      divId: ''
     }
   },
   mounted: function () {
@@ -77,11 +84,35 @@ export default {
         })
         .catch((error) => {
           console.log(error)
-          this.errors[1] = 'Password to weak or old password incorrect'
+          this.errors[1] = 'Old password incorrect'
         })
+    },
+    checkPassword () {
+      const result = zxcvbn(this.newPassword)
+      let strength = ''
+      switch (result.score) {
+        case 0: { this.strengthClass = 'alert alert-danger'; strength = 'Worst'; this.divId = 'weakStrength'; break }
+        case 1: { this.strengthClass = 'alert alert-danger'; strength = 'Bad'; this.divId = 'weakStrength'; break }
+        case 2: { this.strengthClass = 'alert alert-warning'; strength = 'Weak'; this.divId = 'weakStrength'; break }
+        case 3: { this.strengthClass = 'alert alert-info'; strength = 'Good'; this.divId = 'goodStrength'; break }
+        default: { this.strengthClass = 'alert alert-success'; strength = 'Strong'; this.divId = 'strongStrength'; break }
+      }
+      this.passwordStrength = 'Strength: ' + strength + ' ' + result.feedback.warning + '. ' + result.feedback.suggestions
     }
   }
 }
 </script>
-<style scoped src="@/css/Admin.css"></style>
+<style scoped src="@/css/Admin.css">
+</style>
 <style scoped src="@/css/Login.css"></style>
+<style scoped>
+  #weakStrength{
+    color: red;
+  }
+  #strongStrength{
+    color: green;
+  }
+  #goodStrength{
+    color: green;
+  }
+</style>
