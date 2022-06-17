@@ -6,8 +6,7 @@ import com.bsep.service.AuthenticationService;
 import com.bsep.service.LoggerService;
 import com.bsep.service.impl.LoggerServiceImpl;
 import com.bsep.exception.CodeNotMatchingException;
-
-import org.apache.coyote.Response;
+import com.bsep.security.util.TokenUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +22,12 @@ public class AuthenticationController {
 
     private final LoggerService loggerService;
     private final AuthenticationService authenticationService;
+    private final TokenUtils tokenUtils; 
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(AuthenticationService authenticationService, TokenUtils tokenUtils) {
         this.authenticationService = authenticationService;
         this.loggerService = new LoggerServiceImpl(this.getClass());
+        this.tokenUtils =tokenUtils;
     }
 
     @PostMapping(value = "/login")
@@ -34,14 +35,14 @@ public class AuthenticationController {
     	try {
         TokenDTO tokenDTO = authenticationService.login(loginDTO.getUsername(), loginDTO.getPassword(), loginDTO.getCode());
         if(tokenDTO != null) {
-            loggerService.loginSuccess(loginDTO.getUsername(), request.getRemoteAddr());
+            loggerService.loginSuccess(tokenUtils.getUsernameFromToken(tokenDTO.getJwt()).replace('|', ' '), request.getRemoteAddr());
             return ResponseEntity.ok(tokenDTO);
         }
-        loggerService.loginFailed(loginDTO.getUsername(), request.getRemoteAddr());
+        loggerService.loginFailed(loginDTO.getUsername().replace('|', ' '), request.getRemoteAddr());
         return ResponseEntity.badRequest().build();
     	}
     	catch(CodeNotMatchingException codeNotMatchingException){
-    		loggerService.loginFailedCodeNotMatching(loginDTO.getUsername(),  request.getRemoteAddr());
+    		loggerService.loginFailedCodeNotMatching(loginDTO.getUsername().replace('|', ' '),  request.getRemoteAddr());
     		return ResponseEntity.status(300).build();
     	}
     }
@@ -50,10 +51,10 @@ public class AuthenticationController {
     public ResponseEntity<Boolean> login2FACheck(@RequestBody @Valid LoginDTO loginDTO, HttpServletRequest request) {
         Boolean isEnabled2FA = authenticationService.check2FA(loginDTO.getUsername(), loginDTO.getPassword());
         if(isEnabled2FA != null) {
-        	loggerService.login2FACheck(loginDTO.getUsername(), request.getRemoteAddr());
+        	loggerService.login2FACheck(loginDTO.getUsername().replace('|', ' '), request.getRemoteAddr());
             return ResponseEntity.ok(isEnabled2FA);
         }
-        loggerService.login2FACheckFailed(loginDTO.getUsername(), request.getRemoteAddr());
+        loggerService.login2FACheckFailed(loginDTO.getUsername().replace('|', ' '), request.getRemoteAddr());
         return ResponseEntity.badRequest().build();
     
     }

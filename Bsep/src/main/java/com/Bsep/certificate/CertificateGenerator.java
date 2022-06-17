@@ -24,12 +24,14 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 public class CertificateGenerator {
     public CertificateGenerator() {
+    	/*
+    	 Constructor 
+    	 */
     }
 
     public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, NewCertificateDto newCertificateDto) {
@@ -107,10 +109,10 @@ public class CertificateGenerator {
                 certGen.addExtension(Extension.keyUsage, true, new KeyUsage(usage));
             }
             
-            ASN1ObjectIdentifier id_kp = new ASN1ObjectIdentifier("1.3.6.1.5.5.7.3");
+            ASN1ObjectIdentifier idKp = new ASN1ObjectIdentifier("1.3.6.1.5.5.7.3");
             KeyPurposeId[] purposes = new KeyPurposeId[newCertificateDto.getExtendedKeyUsages().size()];
             for(int i=0;i<purposes.length;i++) {
-            	purposes[i] = KeyPurposeId.getInstance(id_kp.branch(newCertificateDto.getExtendedKeyUsages().get(i)));
+            	purposes[i] = KeyPurposeId.getInstance(idKp.branch(newCertificateDto.getExtendedKeyUsages().get(i)));
             }
             certGen.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(purposes));
 
