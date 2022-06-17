@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -92,7 +93,11 @@ public class CertificateServiceImpl implements CerificateService {
     @Override
     public CertificateData createCertificate(NewCertificateDto newCertificateDto) throws Exception {
         KeyPair keyPairSubject = generateKeyPair();
+        if (keyPairSubject == null)
+            return null;
         SubjectData subjectData = generateSubjectData(newCertificateDto, keyPairSubject.getPublic());
+        if (subjectData == null)
+            return null;
         String issuerSerialNumber = "";
         if (newCertificateDto.getCertificateType() == CertificateType.ROOT)
             issuerSerialNumber = subjectData.getSerialNumber();
@@ -147,7 +152,9 @@ public class CertificateServiceImpl implements CerificateService {
     @Override
     public Resource getCertificateResource(Long id) {
         try {
-            CertificateData certificateData = certificateDataRepository.findById(id).get();
+        	Optional<CertificateData> certificateDataTemp = certificateDataRepository.findById(id);
+        	if(certificateDataTemp.isEmpty()) return null;
+        	CertificateData certificateData = certificateDataTemp.get();
             File filePath = getCertificatePath(certificateData.getSerialNumber());
             org.springframework.core.io.Resource resource = new UrlResource(filePath.toPath().toUri());
             if (resource.exists()) {
@@ -234,7 +241,9 @@ public class CertificateServiceImpl implements CerificateService {
 
     private void createCertificateFile(Long id) throws Exception {
         Base64.Encoder encoder = Base64.getMimeEncoder(64, LINE_SEPARATOR.getBytes());
-        CertificateData certificateData = certificateDataRepository.findById(id).get();
+        Optional<CertificateData> certificateDataTemp = certificateDataRepository.findById(id);
+    	if(certificateDataTemp.isEmpty()) return;
+    	CertificateData certificateData = certificateDataTemp.get();
         if (!isCertificateValid(certificateData)) {
             throw new Exception();
         }
