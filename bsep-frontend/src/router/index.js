@@ -1,13 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-function guardMyroute (to, from, next) {
+function guardMyroute (_to, _from, next) {
   let isAuthenticated = false
-  if (window.sessionStorage.getItem('jwt')) { isAuthenticated = true } else { isAuthenticated = false }
+  if (window.sessionStorage.getItem('jwt')) { isAuthenticated = true }
   if (isAuthenticated) {
     next()
   } else {
     next('/')
   }
+}
+
+function guardMyRouteAdmin (_to, _from, next) {
+  let adminAuthenticated = false
+  if (getRoleFromToken() === 'ROLE_ADMIN') { adminAuthenticated = true }
+  if (adminAuthenticated) {
+    next()
+  } else {
+    next('/all-certificates-page')
+  }
+}
+
+function getRoleFromToken () {
+  const jwtToken = window.sessionStorage.getItem('jwt')
+  if (jwtToken) {
+    const tokenSplit = jwtToken.split('.')
+    const decoded = decodeURIComponent(escape(window.atob(tokenSplit[1])))
+    const obj = JSON.parse(decoded)
+    return obj.role
+  }
+  return ''
 }
 
 const routes = [
@@ -28,7 +49,7 @@ const routes = [
   {
     path: '/create-certificate-page',
     name: '',
-    beforeEnter: guardMyroute,
+    beforeEnter: guardMyRouteAdmin,
     component: () => import(/* webpackChunkName: "about" */ '../views/CreateCertificateView.vue')
   },
   {
