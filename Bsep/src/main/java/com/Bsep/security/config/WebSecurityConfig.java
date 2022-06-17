@@ -1,9 +1,9 @@
-package com.Bsep.security.config;
+package com.bsep.security.config;
 
-import com.Bsep.security.auth.RestAuthenticationEntryPoint;
-import com.Bsep.security.auth.TokenAuthenticationFilter;
-import com.Bsep.security.util.TokenUtils;
-import com.Bsep.service.impl.CustomUserDetailsService;
+import com.bsep.security.auth.RestAuthenticationEntryPoint;
+import com.bsep.security.auth.TokenAuthenticationFilter;
+import com.bsep.security.util.TokenUtils;
+import com.bsep.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

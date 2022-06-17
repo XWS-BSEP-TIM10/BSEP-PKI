@@ -1,4 +1,4 @@
-package com.Bsep.security.auth;
+package com.bsep.security.auth;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

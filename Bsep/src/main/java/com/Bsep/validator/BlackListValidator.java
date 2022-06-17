@@ -1,4 +1,4 @@
-package com.Bsep.validator;
+package com.bsep.validator;
 
 import com.codahale.passpol.BreachDatabase;
 import com.codahale.passpol.PasswordPolicy;

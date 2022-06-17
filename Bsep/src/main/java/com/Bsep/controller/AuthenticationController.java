@@ -1,11 +1,11 @@
-package com.Bsep.controller;
+package com.bsep.controller;
 
-import com.Bsep.dto.LoginDTO;
-import com.Bsep.dto.TokenDTO;
-import com.Bsep.service.AuthenticationService;
-import com.Bsep.service.LoggerService;
-import com.Bsep.service.impl.LoggerServiceImpl;
-import com.Bsep.exception.CodeNotMatchingException;
+import com.bsep.dto.LoginDTO;
+import com.bsep.dto.TokenDTO;
+import com.bsep.service.AuthenticationService;
+import com.bsep.service.LoggerService;
+import com.bsep.service.impl.LoggerServiceImpl;
+import com.bsep.exception.CodeNotMatchingException;
 
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;

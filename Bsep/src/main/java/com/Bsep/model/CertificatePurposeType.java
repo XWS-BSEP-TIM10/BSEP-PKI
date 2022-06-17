@@ -1,4 +1,4 @@
-package com.Bsep.model;
+package com.bsep.model;
 
 public enum CertificatePurposeType {
     SERVICE, SUBSYSTEM, USER;

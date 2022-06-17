@@ -1,4 +1,4 @@
-package com.Bsep.exception;
+package com.bsep.exception;
 
 public class WrongPasswordException extends Exception {
     public WrongPasswordException() {

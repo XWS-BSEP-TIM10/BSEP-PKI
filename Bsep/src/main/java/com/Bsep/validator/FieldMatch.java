@@ -1,4 +1,4 @@
-package com.Bsep.validator;
+package com.bsep.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

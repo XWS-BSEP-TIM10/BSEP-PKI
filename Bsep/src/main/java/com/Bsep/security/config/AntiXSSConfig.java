@@ -1,4 +1,4 @@
-package com.Bsep.security.config;
+package com.bsep.security.config;
 
 import com.fasterxml.jackson.core.JsonpCharacterEscapes;
 import com.fasterxml.jackson.core.SerializableString;

@@ -1,6 +1,6 @@
-package com.Bsep.security.config;
+package com.bsep.security.config;
 
-import com.Bsep.security.auth.XSSRequestWrapper;
+import com.bsep.security.auth.XSSRequestWrapper;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;

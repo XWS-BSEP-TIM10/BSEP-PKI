@@ -1,6 +1,6 @@
-package com.Bsep.service.impl;
+package com.bsep.service.impl;
 
-import com.Bsep.service.LoggerService;
+import com.bsep.service.LoggerService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

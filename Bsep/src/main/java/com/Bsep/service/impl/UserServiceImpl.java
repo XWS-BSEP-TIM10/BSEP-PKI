@@ -1,11 +1,11 @@
-package com.Bsep.service.impl;
+package com.bsep.service.impl;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.Bsep.dto.ChangePasswordDTO;
-import com.Bsep.exception.UserNotFoundException;
-import com.Bsep.exception.WrongPasswordException;
+import com.bsep.dto.ChangePasswordDTO;
+import com.bsep.exception.UserNotFoundException;
+import com.bsep.exception.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,11 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-import com.Bsep.model.Role;
-import com.Bsep.model.User;
-import com.Bsep.repository.UserRepository;
-import com.Bsep.service.RoleService;
-import com.Bsep.service.UserService;
+import com.bsep.model.Role;
+import com.bsep.model.User;
+import com.bsep.repository.UserRepository;
+import com.bsep.service.RoleService;
+import com.bsep.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {

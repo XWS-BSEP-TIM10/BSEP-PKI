@@ -1,11 +1,11 @@
-package com.Bsep.service;
+package com.bsep.service;
 
 import java.util.List;
 
 
-import com.Bsep.dto.ChangePasswordDTO;
-import com.Bsep.exception.WrongPasswordException;
-import com.Bsep.model.User;
+import com.bsep.dto.ChangePasswordDTO;
+import com.bsep.exception.WrongPasswordException;
+import com.bsep.model.User;
 
 public interface UserService {
     User findById(Long id);

@@ -1,6 +1,6 @@
-package com.Bsep.repository;
+package com.bsep.repository;
 
-import com.Bsep.model.CertificateData;
+import com.bsep.model.CertificateData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

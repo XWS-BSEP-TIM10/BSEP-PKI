@@ -1,4 +1,4 @@
-package com.Bsep.certificate;
+package com.bsep.certificate;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -20,9 +20,7 @@ public class CertificateReader {
 	public static final String BIN_ENC_CERT_FILE = "./data/jovan1.cer";
 	
 	public void testIt() {
-		System.out.println("Cita sertifikat iz Base64 formata");
 		readFromBase64EncFile();
-		System.out.println("\n\nCita sertifikat iz binarnog formata");
 		readFromBinEncFile();
 	}
 	
@@ -57,7 +55,6 @@ public class CertificateReader {
 			Iterator i = c.iterator();
 			while (i.hasNext()) {
 			    Certificate cert = (Certificate)i.next();
-			    System.out.println(cert);
 			}
 		} catch (FileNotFoundException | CertificateException e) {
 			e.printStackTrace();

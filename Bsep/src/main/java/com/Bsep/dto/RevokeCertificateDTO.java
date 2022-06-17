@@ -1,4 +1,4 @@
-package com.Bsep.dto;
+package com.bsep.dto;
 
 public class RevokeCertificateDTO {
 	private String reason;

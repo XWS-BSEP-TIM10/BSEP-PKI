@@ -1,4 +1,4 @@
-package com.Bsep.dto;
+package com.bsep.dto;
 
 public class Change2FAStatusDTO {
 	

@@ -1,4 +1,4 @@
-package com.Bsep.exception;
+package com.bsep.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {

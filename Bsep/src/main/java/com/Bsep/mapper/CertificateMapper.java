@@ -1,7 +1,7 @@
-package com.Bsep.mapper;
+package com.bsep.mapper;
 
-import com.Bsep.dto.CertificateDto;
-import com.Bsep.model.CertificateData;
+import com.bsep.dto.CertificateDto;
+import com.bsep.model.CertificateData;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;

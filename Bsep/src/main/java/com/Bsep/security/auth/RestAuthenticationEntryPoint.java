@@ -1,7 +1,7 @@
-package com.Bsep.security.auth;
+package com.bsep.security.auth;
 
-import com.Bsep.service.LoggerService;
-import com.Bsep.service.impl.LoggerServiceImpl;
+import com.bsep.service.LoggerService;
+import com.bsep.service.impl.LoggerServiceImpl;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

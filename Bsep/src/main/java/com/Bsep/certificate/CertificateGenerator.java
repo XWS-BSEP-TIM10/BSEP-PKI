@@ -1,9 +1,9 @@
-package com.Bsep.certificate;
+package com.bsep.certificate;
 
-import com.Bsep.dto.NewCertificateDto;
-import com.Bsep.model.CertificateType;
-import com.Bsep.model.IssuerData;
-import com.Bsep.model.SubjectData;
+import com.bsep.dto.NewCertificateDto;
+import com.bsep.model.CertificateType;
+import com.bsep.model.IssuerData;
+import com.bsep.model.SubjectData;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
 import org.bouncycastle.asn1.x509.BasicConstraints;

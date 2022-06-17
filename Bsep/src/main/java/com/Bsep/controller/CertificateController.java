@@ -1,14 +1,14 @@
-package com.Bsep.controller;
+package com.bsep.controller;
 
-import com.Bsep.dto.CertificateDto;
-import com.Bsep.dto.CertificateRevocationStatusDTO;
-import com.Bsep.dto.NewCertificateDto;
-import com.Bsep.dto.RevokeCertificateDTO;
-import com.Bsep.model.CertificateData;
-import com.Bsep.service.LoggerService;
-import com.Bsep.service.UserService;
-import com.Bsep.service.impl.CertificateServiceImpl;
-import com.Bsep.service.impl.LoggerServiceImpl;
+import com.bsep.dto.CertificateDto;
+import com.bsep.dto.CertificateRevocationStatusDTO;
+import com.bsep.dto.NewCertificateDto;
+import com.bsep.dto.RevokeCertificateDTO;
+import com.bsep.model.CertificateData;
+import com.bsep.service.LoggerService;
+import com.bsep.service.UserService;
+import com.bsep.service.impl.CertificateServiceImpl;
+import com.bsep.service.impl.LoggerServiceImpl;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

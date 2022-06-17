@@ -1,11 +1,11 @@
-package com.Bsep.dto;
+package com.bsep.dto;
 
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
-import com.Bsep.model.CertificatePurposeType;
-import com.Bsep.model.CertificateType;
+import com.bsep.model.CertificatePurposeType;
+import com.bsep.model.CertificateType;
 
 public class NewCertificateDto {
 	

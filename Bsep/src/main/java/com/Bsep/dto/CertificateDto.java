@@ -1,7 +1,7 @@
-package com.Bsep.dto;
+package com.bsep.dto;
 
-import com.Bsep.model.CertificateStatus;
-import com.Bsep.model.CertificateType;
+import com.bsep.model.CertificateStatus;
+import com.bsep.model.CertificateType;
 
 public class CertificateDto {
 

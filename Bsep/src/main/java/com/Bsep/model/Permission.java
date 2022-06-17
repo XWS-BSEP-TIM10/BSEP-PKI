@@ -1,4 +1,4 @@
-package com.Bsep.model;
+package com.bsep.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

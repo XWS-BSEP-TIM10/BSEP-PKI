@@ -1,4 +1,4 @@
-package com.Bsep.dto;
+package com.bsep.dto;
 
 import javax.validation.constraints.NotBlank;
 

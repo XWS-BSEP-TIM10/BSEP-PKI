@@ -1,4 +1,4 @@
-package com.Bsep.security.auth;
+package com.bsep.security.auth;
 
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import com.Bsep.security.util.TokenUtils;
+import com.bsep.security.util.TokenUtils;
 
 // Filter koji ce presretati SVAKI zahtev klijenta ka serveru 
 // (sem nad putanjama navedenim u WebSecurityConfig.configure(WebSecurity web))

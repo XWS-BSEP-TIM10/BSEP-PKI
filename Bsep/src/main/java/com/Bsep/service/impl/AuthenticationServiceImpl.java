@@ -1,11 +1,11 @@
-package com.Bsep.service.impl;
+package com.bsep.service.impl;
 
-import com.Bsep.dto.TokenDTO;
-import com.Bsep.model.User;
-import com.Bsep.security.util.TokenUtils;
-import com.Bsep.service.AuthenticationService;
-import com.Bsep.service.UserService;
-import com.Bsep.exception.CodeNotMatchingException;
+import com.bsep.dto.TokenDTO;
+import com.bsep.model.User;
+import com.bsep.security.util.TokenUtils;
+import com.bsep.service.AuthenticationService;
+import com.bsep.service.UserService;
+import com.bsep.exception.CodeNotMatchingException;
 
 import de.taimos.totp.TOTP;
 

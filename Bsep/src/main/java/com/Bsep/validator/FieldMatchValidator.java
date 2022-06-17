@@ -1,4 +1,4 @@
-package com.Bsep.validator;
+package com.bsep.validator;
 
 import org.apache.commons.beanutils.BeanUtils;
 

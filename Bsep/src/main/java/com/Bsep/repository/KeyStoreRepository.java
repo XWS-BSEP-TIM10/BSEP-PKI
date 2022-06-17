@@ -1,8 +1,8 @@
-package com.Bsep.repository;
+package com.bsep.repository;
 
-import com.Bsep.keystore.KeyStoreReader;
-import com.Bsep.keystore.KeyStoreWriter;
-import com.Bsep.model.CertificateType;
+import com.bsep.keystore.KeyStoreReader;
+import com.bsep.keystore.KeyStoreWriter;
+import com.bsep.model.CertificateType;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Repository;
 

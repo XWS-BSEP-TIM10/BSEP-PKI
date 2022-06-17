@@ -1,8 +1,8 @@
-package com.Bsep.dto;
+package com.bsep.dto;
 
-import com.Bsep.validator.BlackList;
-import com.Bsep.validator.FieldMatch;
-import com.Bsep.validator.ValidPassword;
+import com.bsep.validator.BlackList;
+import com.bsep.validator.FieldMatch;
+import com.bsep.validator.ValidPassword;
 
 import javax.validation.constraints.NotBlank;
 

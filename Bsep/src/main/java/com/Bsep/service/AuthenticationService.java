@@ -1,6 +1,6 @@
-package com.Bsep.service;
+package com.bsep.service;
 
-import com.Bsep.dto.TokenDTO;
+import com.bsep.dto.TokenDTO;
 
 public interface AuthenticationService {
 	TokenDTO login(String username, String password, String code);

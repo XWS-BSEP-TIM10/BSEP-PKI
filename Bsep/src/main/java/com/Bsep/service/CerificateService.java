@@ -1,10 +1,10 @@
-package com.Bsep.service;
+package com.bsep.service;
 
-import com.Bsep.dto.CertificateDto;
-import com.Bsep.dto.CertificateRevocationStatusDTO;
-import com.Bsep.dto.NewCertificateDto;
-import com.Bsep.dto.RevokeCertificateDTO;
-import com.Bsep.model.CertificateData;
+import com.bsep.dto.CertificateDto;
+import com.bsep.dto.CertificateRevocationStatusDTO;
+import com.bsep.dto.NewCertificateDto;
+import com.bsep.dto.RevokeCertificateDTO;
+import com.bsep.model.CertificateData;
 import org.springframework.core.io.Resource;
 
 import java.util.List;

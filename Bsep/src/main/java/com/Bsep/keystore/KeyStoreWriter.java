@@ -1,4 +1,4 @@
-package com.Bsep.keystore;
+package com.bsep.keystore;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

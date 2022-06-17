@@ -1,13 +1,13 @@
-package com.Bsep.service.impl;
+package com.bsep.service.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.Bsep.model.Role;
-import com.Bsep.repository.RoleRepository;
-import com.Bsep.service.RoleService;
+import com.bsep.model.Role;
+import com.bsep.repository.RoleRepository;
+import com.bsep.service.RoleService;
 
 @Service
 public class RoleServiceImpl implements RoleService {

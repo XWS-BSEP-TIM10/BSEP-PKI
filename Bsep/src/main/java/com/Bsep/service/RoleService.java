@@ -1,8 +1,8 @@
-package com.Bsep.service;
+package com.bsep.service;
 
 import java.util.List;
 
-import com.Bsep.model.Role;
+import com.bsep.model.Role;
 
 public interface RoleService {
 	Role findById(Long id);

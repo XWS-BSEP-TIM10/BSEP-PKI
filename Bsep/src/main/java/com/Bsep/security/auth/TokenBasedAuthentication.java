@@ -1,4 +1,4 @@
-package com.Bsep.security.auth;
+package com.bsep.security.auth;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;

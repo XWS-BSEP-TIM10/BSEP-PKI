@@ -1,6 +1,6 @@
-package com.Bsep.security.util;
+package com.bsep.security.util;
 
-import com.Bsep.model.User;
+import com.bsep.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -191,7 +191,10 @@ public class TokenUtils {
             expiration = claims.getExpiration();
         } catch (ExpiredJwtException ex) {
             throw ex;
-        } catch (Exception e) {
+        }  catch (NullPointerException ex) {
+            throw ex;
+        }  
+        catch (Exception e) {
             expiration = null;
         }
 

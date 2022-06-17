@@ -1,4 +1,4 @@
-package com.Bsep.model;
+package com.bsep.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

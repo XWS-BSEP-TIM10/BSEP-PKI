@@ -1,4 +1,4 @@
-package com.Bsep.model;
+package com.bsep.model;
 
 import org.apache.commons.codec.binary.Base32;
 import org.springframework.security.core.GrantedAuthority;

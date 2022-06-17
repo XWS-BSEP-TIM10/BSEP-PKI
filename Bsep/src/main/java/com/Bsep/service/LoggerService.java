@@ -1,4 +1,4 @@
-package com.Bsep.service;
+package com.bsep.service;
 
 public interface LoggerService {
     void loginSuccess(String username, String ip);

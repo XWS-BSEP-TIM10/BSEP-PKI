@@ -1,14 +1,14 @@
-package com.Bsep.controller;
+package com.bsep.controller;
 
-import com.Bsep.dto.Change2FAStatusDTO;
-import com.Bsep.dto.ChangePasswordDTO;
-import com.Bsep.dto.TwoFactorAuthenticationDTO;
-import com.Bsep.exception.UserNotFoundException;
-import com.Bsep.exception.WrongPasswordException;
-import com.Bsep.model.User;
-import com.Bsep.service.LoggerService;
-import com.Bsep.service.UserService;
-import com.Bsep.service.impl.LoggerServiceImpl;
+import com.bsep.dto.Change2FAStatusDTO;
+import com.bsep.dto.ChangePasswordDTO;
+import com.bsep.dto.TwoFactorAuthenticationDTO;
+import com.bsep.exception.UserNotFoundException;
+import com.bsep.exception.WrongPasswordException;
+import com.bsep.model.User;
+import com.bsep.service.LoggerService;
+import com.bsep.service.UserService;
+import com.bsep.service.impl.LoggerServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
