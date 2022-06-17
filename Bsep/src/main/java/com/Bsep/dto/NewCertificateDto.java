@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
-import com.bsep.model.CertificatePurposeType;
 import com.bsep.model.CertificateType;
 
 public class NewCertificateDto {

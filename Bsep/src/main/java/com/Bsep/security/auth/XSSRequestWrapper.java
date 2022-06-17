@@ -4,22 +4,16 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import com.google.common.base.Charsets;
+import org.springframework.http.MediaType;
+
 import com.google.common.io.CharStreams;
 import com.google.common.net.HttpHeaders;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 
 public class XSSRequestWrapper extends HttpServletRequestWrapper {
 	public XSSRequestWrapper(HttpServletRequest servletRequest) {
@@ -31,7 +25,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 		String[] values = super.getParameterValues(parameter);
 
 		if (values == null) {
-			return null;
+			return new String[0];
 		}
 
 		int count = values.length;
@@ -51,7 +45,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 
 		//Null, return directly
 		String json = CharStreams.toString(new InputStreamReader(
-				super.getInputStream(), Charsets.UTF_8));
+				super.getInputStream(), StandardCharsets.UTF_8));
 
 		if (json.isEmpty()) {
 			return super.getInputStream();
@@ -74,6 +68,9 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 
 			@Override
 			public void setReadListener(ReadListener readListener) {
+				/*
+				 Implementing inherited abstract method
+				 */
 			}
 
 			@Override

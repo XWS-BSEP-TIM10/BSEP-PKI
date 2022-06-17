@@ -22,4 +22,6 @@ public interface LoggerService {
     void loginFailedCodeNotMatching (String username, String ip);
     void login2FACheck (String username, String ip);
     void login2FACheckFailed (String username, String ip);
+    void providerError();
+    void errorLog(Exception e);
 }

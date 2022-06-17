@@ -1,5 +1,7 @@
 package com.bsep.security.auth;
 
+import java.util.Objects;
+
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,10 +16,6 @@ public class TokenBasedAuthentication extends AbstractAuthenticationToken {
 	public TokenBasedAuthentication(UserDetails principle) {
 		super(principle.getAuthorities());
 		this.principle = principle;
-	}
-
-	public String getToken() {
-		return token;
 	}
 
 	public void setToken(String token) {
@@ -38,5 +36,27 @@ public class TokenBasedAuthentication extends AbstractAuthenticationToken {
 	public UserDetails getPrincipal() {
 		return principle;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(token);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TokenBasedAuthentication other = (TokenBasedAuthentication) obj;
+		return Objects.equals(token, other.token);
+	}
+	
+	
 
 }

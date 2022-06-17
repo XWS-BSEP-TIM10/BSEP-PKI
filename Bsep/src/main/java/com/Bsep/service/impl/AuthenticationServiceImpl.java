@@ -1,22 +1,21 @@
 package com.bsep.service.impl;
 
-import com.bsep.dto.TokenDTO;
-import com.bsep.model.User;
-import com.bsep.security.util.TokenUtils;
-import com.bsep.service.AuthenticationService;
-import com.bsep.service.UserService;
-import com.bsep.exception.CodeNotMatchingException;
-
-import de.taimos.totp.TOTP;
-
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.bsep.dto.TokenDTO;
+import com.bsep.exception.CodeNotMatchingException;
+import com.bsep.model.User;
+import com.bsep.security.util.TokenUtils;
+import com.bsep.service.AuthenticationService;
+import com.bsep.service.UserService;
+
+import de.taimos.totp.TOTP;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -63,9 +62,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User check2FA(String username, String password) {
     	User user = userService.findByUsername(username);
-        Authentication authentication;
         try {
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     username, password));
         }catch(Exception ex){
             return null;

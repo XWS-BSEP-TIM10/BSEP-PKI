@@ -1,7 +1,5 @@
 package com.bsep.dto;
 
-import com.bsep.model.CertificateStatus;
-
 public class CertificateRevocationStatusDTO {
 	private Boolean status;
 	private String revocationReason;

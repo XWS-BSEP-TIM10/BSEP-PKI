@@ -23,11 +23,8 @@ public class AntiXSSConfig {
         @Override
         public int[] getEscapeCodesForAscii() {
             int[] asciiEscapes = CharacterEscapes.standardAsciiEscapesForJSON();
-            // and force escaping of a few others:
             asciiEscapes['<'] = CharacterEscapes.ESCAPE_CUSTOM;
-            asciiEscapes['>'] = CharacterEscapes.ESCAPE_CUSTOM;
-            //asciiEscapes['&'] = CharacterEscapes.ESCAPE_CUSTOM;
-            //asciiEscapes['"'] = CharacterEscapes.ESCAPE_CUSTOM;
+            asciiEscapes['>'] = CharacterEscapes.ESCAPE_CUSTOM;  
             asciiEscapes['\''] = CharacterEscapes.ESCAPE_CUSTOM;
             return asciiEscapes;
         }

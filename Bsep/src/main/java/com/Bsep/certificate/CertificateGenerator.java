@@ -4,6 +4,9 @@ import com.bsep.dto.NewCertificateDto;
 import com.bsep.model.CertificateType;
 import com.bsep.model.IssuerData;
 import com.bsep.model.SubjectData;
+import com.bsep.service.LoggerService;
+import com.bsep.service.impl.LoggerServiceImpl;
+
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.x509.AuthorityKeyIdentifier;
 import org.bouncycastle.asn1.x509.BasicConstraints;
@@ -28,6 +31,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 public class CertificateGenerator {
+	private final LoggerService loggerService= new LoggerServiceImpl(this.getClass());
+	
     public CertificateGenerator() {
     	/*
     	 Constructor 
@@ -77,9 +82,8 @@ public class CertificateGenerator {
             //Konvertuje objekat u sertifikat
             return certConverter.getCertificate(certHolder);
         } catch (IllegalArgumentException | IllegalStateException | OperatorCreationException | CertificateException | NoSuchAlgorithmException | CertIOException e) {
-            
+        	return null;
         }
-        return null;
     }
 
     private void addExtensions(NewCertificateDto newCertificateDto, X509v3CertificateBuilder certGen) {
@@ -87,13 +91,13 @@ public class CertificateGenerator {
             try {
                 certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
             } catch (CertIOException e) {
-                
+               return; 
             }
         } else {
             try {
                 certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
             } catch (CertIOException e) {
-                
+            	return; 
             }
         }
         int usage = 0;
@@ -117,7 +121,7 @@ public class CertificateGenerator {
             certGen.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(purposes));
 
         } catch (CertIOException e) {
-            
+        	loggerService.errorLog(e);
         }
 
     }

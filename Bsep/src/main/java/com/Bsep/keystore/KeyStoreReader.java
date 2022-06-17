@@ -1,12 +1,14 @@
 package com.bsep.keystore;
 
 import com.bsep.model.IssuerData;
+import com.bsep.service.LoggerService;
+import com.bsep.service.impl.LoggerServiceImpl;
+
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -25,14 +27,14 @@ public class KeyStoreReader {
     // - Privatni kljucevi
     // - Tajni kljucevi, koji se koriste u simetricnima siframa
     private KeyStore keyStore;
+    
+    private final LoggerService loggerService= new LoggerServiceImpl(this.getClass());
 
     public KeyStoreReader() {
         try {
             keyStore = KeyStore.getInstance("JKS", "SUN");
-        } catch (KeyStoreException e) {
-            
-        } catch (NoSuchProviderException e) {
-            
+        } catch (KeyStoreException|NoSuchProviderException e) {
+            loggerService.providerError();
         }
     }
 
@@ -58,50 +60,27 @@ public class KeyStoreReader {
 
             X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) cert).getSubject();
             return new IssuerData(privKey, issuerName, cert.getPublicKey());
-        } catch (KeyStoreException e) {
-            
-        } catch (FileNotFoundException e) {
-            
-        } catch (NoSuchAlgorithmException e) {
-            
-        } catch (CertificateException e) {
-            
-        } catch (UnrecoverableKeyException e) {
-            
-        } catch (IOException e) {
-            
-        }
-        return null;
+        } catch (KeyStoreException|NoSuchAlgorithmException|CertificateException|UnrecoverableKeyException|IOException e) {
+            return null;
+        } 
     }
 
     /**
      * Ucitava sertifikat is KS fajla
      */
     public Certificate readCertificate(String keyStoreFile, String keyStorePass, String alias) {
-        try {
+        try(BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile))) {
             //kreiramo instancu KeyStore
             KeyStore ks = KeyStore.getInstance("JKS", "SUN");
             //ucitavamo podatke
-            BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
             ks.load(in, keyStorePass.toCharArray());
 
             if (ks.isKeyEntry(alias)) {
-                Certificate cert = ks.getCertificate(alias);
-                return cert;
+                return ks.getCertificate(alias);
             }
-        } catch (KeyStoreException e) {
-            
-        } catch (NoSuchProviderException e) {
-            
-        } catch (FileNotFoundException e) {
-            
-        } catch (NoSuchAlgorithmException e) {
-            
-        } catch (CertificateException e) {
-            
-        } catch (IOException e) {
-            
-        }
+        } catch (KeyStoreException| NoSuchProviderException|NoSuchAlgorithmException|CertificateException|IOException  e) {
+        	 return null;
+        } 
         return null;
     }
 
@@ -109,32 +88,18 @@ public class KeyStoreReader {
      * Ucitava privatni kljuc is KS fajla
      */
     public PrivateKey readPrivateKey(String keyStoreFile, String keyStorePass, String alias, String pass) {
-        try {
+        try(BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile))) {
             //kreiramo instancu KeyStore
             KeyStore ks = KeyStore.getInstance("JKS", "SUN");
             //ucitavamo podatke
-            BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
             ks.load(in, keyStorePass.toCharArray());
 
             if (ks.isKeyEntry(alias)) {
-                PrivateKey pk = (PrivateKey) ks.getKey(alias, pass.toCharArray());
-                return pk;
+                return (PrivateKey) ks.getKey(alias, pass.toCharArray());
             }
-        } catch (KeyStoreException e) {
-            
-        } catch (NoSuchProviderException e) {
-            
-        } catch (FileNotFoundException e) {
-            
-        } catch (NoSuchAlgorithmException e) {
-            
-        } catch (CertificateException e) {
-            
-        } catch (IOException e) {
-            
-        } catch (UnrecoverableKeyException e) {
-            
-        }
+        } catch (KeyStoreException|NoSuchProviderException|NoSuchAlgorithmException|CertificateException|IOException|UnrecoverableKeyException e) {
+        	 return null;
+        } 
         return null;
     }
 }

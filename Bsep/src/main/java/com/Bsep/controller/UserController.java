@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -33,16 +34,16 @@ public class UserController {
         this.loggerService = new LoggerServiceImpl(this.getClass());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getAllUsers")
+    @GetMapping("/getAllUsers")
     @PreAuthorize("hasAuthority('GET_USERS_PERMISSION')")
-    public ResponseEntity<?> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         loggerService.getAllUsers(SecurityContextHolder.getContext().getAuthentication().getName());
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @PutMapping("/change-password")
     @PreAuthorize("hasAuthority('CHANGE_PASSWORD_PERMISSION')")
-    public ResponseEntity<?> changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO) {
+    public ResponseEntity<HttpStatus> changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDTO) {
         try {
             User changedUser = userService.changePassword(changePasswordDTO, SecurityContextHolder.getContext().getAuthentication().getName());
             if(changedUser == null) {
@@ -62,7 +63,7 @@ public class UserController {
     
     @GetMapping("/2fa-status")
     @PreAuthorize("hasAuthority('GET_2FA_STATUS_PERMISSION')")
-    public ResponseEntity<?> get2FAStatus() {
+    public ResponseEntity<TwoFactorAuthenticationDTO> get2FAStatus() {
        String username = SecurityContextHolder.getContext().getAuthentication().getName();
        User user = userService.findByUsername(username);
        loggerService.get2FAStatus(username);
@@ -71,7 +72,7 @@ public class UserController {
     
     @PutMapping("/2fa-status")
     @PreAuthorize("hasAuthority('CHANGE_2FA_STATUS_PERMISSION')")
-    public ResponseEntity<?> change2FAStatus(@RequestBody Change2FAStatusDTO change2faStatusDTO) {
+    public ResponseEntity<HttpStatus> change2FAStatus(@RequestBody Change2FAStatusDTO change2faStatusDTO) {
     	String username = "";
         try {
         	username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -89,7 +90,7 @@ public class UserController {
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+        ex.getBindingResult().getAllErrors().forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);

@@ -4,6 +4,7 @@ import com.bsep.dto.CertificateDto;
 import com.bsep.dto.CertificateRevocationStatusDTO;
 import com.bsep.dto.NewCertificateDto;
 import com.bsep.dto.RevokeCertificateDTO;
+import com.bsep.exception.CertificateInvalidException;
 import com.bsep.model.CertificateData;
 import com.bsep.service.LoggerService;
 import com.bsep.service.UserService;
@@ -19,6 +20,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateEncodingException;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -37,7 +44,7 @@ public class CertificateController {
 
     @PostMapping(value = "/create")
     @PreAuthorize("hasAuthority('CREATE_CERTIFICATE_PERMISSION')")
-    public ResponseEntity<CertificateData> createCertificate(@RequestBody NewCertificateDto newCertificateDto) throws Exception {
+    public ResponseEntity<CertificateData> createCertificate(@RequestBody NewCertificateDto newCertificateDto) throws CertificateInvalidException, UnrecoverableKeyException, CertificateEncodingException, KeyStoreException, NoSuchAlgorithmException, ParseException, IOException {
         CertificateData newCertificate = certificateService.createCertificate(newCertificateDto);
         if(newCertificate == null) {
             loggerService.certificateCreatingFailed(SecurityContextHolder.getContext().getAuthentication().getName(), userService.findById(newCertificateDto.getSubjectUID()).getUsername());

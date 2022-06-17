@@ -5,6 +5,7 @@ import com.bsep.dto.CertificateDto;
 import com.bsep.dto.CertificateRevocationStatusDTO;
 import com.bsep.dto.NewCertificateDto;
 import com.bsep.dto.RevokeCertificateDTO;
+import com.bsep.exception.CertificateInvalidException;
 import com.bsep.mapper.CertificateMapper;
 import com.bsep.model.CertificateData;
 import com.bsep.model.CertificatePurposeType;
@@ -91,7 +92,7 @@ public class CertificateServiceImpl implements CerificateService {
     }
 
     @Override
-    public CertificateData createCertificate(NewCertificateDto newCertificateDto) throws Exception {
+    public CertificateData createCertificate(NewCertificateDto newCertificateDto) throws CertificateInvalidException, UnrecoverableKeyException, CertificateEncodingException, KeyStoreException, NoSuchAlgorithmException, ParseException, IOException {
         KeyPair keyPairSubject = generateKeyPair();
         if (keyPairSubject == null)
             return null;
@@ -196,7 +197,6 @@ public class CertificateServiceImpl implements CerificateService {
     @Override
     public CertificateRevocationStatusDTO isRevoked(String serialNumber) {
         CertificateData certificateData = certificateDataRepository.findBySerialNumber(serialNumber);
-        //return certificateData.getCertificateStatus() == CertificateStatus.REVOKED;
         return new CertificateRevocationStatusDTO(certificateData.getCertificateStatus() == CertificateStatus.REVOKED, certificateData.getRevocationReason());
         
     }
@@ -239,13 +239,13 @@ public class CertificateServiceImpl implements CerificateService {
         return new File(CERTIFICATE_DIRECTORY + File.separator + serialNumber + ".cer");
     }
 
-    private void createCertificateFile(Long id) throws Exception {
+    private void createCertificateFile(Long id) throws CertificateInvalidException, CertificateEncodingException, IOException {
         Base64.Encoder encoder = Base64.getMimeEncoder(64, LINE_SEPARATOR.getBytes());
         Optional<CertificateData> certificateDataTemp = certificateDataRepository.findById(id);
     	if(!certificateDataTemp.isPresent()) return;
     	CertificateData certificateData = certificateDataTemp.get();
         if (!isCertificateValid(certificateData)) {
-            throw new Exception();
+            throw new CertificateInvalidException();
         }
         StringBuilder certificates = new StringBuilder();
         Certificate firstCert = keyStoreRepository.readCertificate(certificateData.getCertificateType(), certificateData.getSerialNumber());
@@ -297,9 +297,8 @@ public class CertificateServiceImpl implements CerificateService {
 
             return new SubjectData(publicKey, builder.build(), sn, startDate, endDate);
         } catch (ParseException e) {
-            
+        	return null;
         }
-        return null;
     }
 
     private Certificate[] getCertificateChain(CertificateData certificateData, Certificate currentCertificate) {
@@ -323,7 +322,7 @@ public class CertificateServiceImpl implements CerificateService {
     public static String generateSerialNumber() {
         String uuid;
         do
-            uuid = UUID.randomUUID().toString().replaceAll("-", ""); //uuid starting with 0 creates problems with bigint parsing
+            uuid = UUID.randomUUID().toString().replace("-", ""); //uuid starting with 0 creates problems with bigint parsing
         while (uuid.startsWith("0"));
         return uuid;
     }
@@ -336,11 +335,10 @@ public class CertificateServiceImpl implements CerificateService {
             keyGen.initialize(2048, random);
             return keyGen.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
-            
+        	return null;
         } catch (NoSuchProviderException e) {
-            
+        	return null;
         }
-        return null;
     }
 
     private IssuerData getIssuerData(NewCertificateDto newCertificateDto, KeyPair keyPairSubject, SubjectData subjectData) throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateEncodingException {

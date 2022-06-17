@@ -114,5 +114,15 @@ public class LoggerServiceImpl implements LoggerService {
     public void login2FACheckFailed(String username, String ip) {
         logger.warn("Login failed. Username: {} From: {}", username, ip);
     }
+    
+    @Override
+    public void providerError() {
+        logger.error("Can't find provider.");
+    }
+    
+    @Override
+    public void errorLog(Exception e) {
+        logger.error(e);
+    }
 
 }

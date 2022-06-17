@@ -1,11 +1,11 @@
 package com.bsep.model;
 
-import org.apache.commons.codec.binary.Base32;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.security.SecureRandom;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,16 +15,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.apache.commons.codec.binary.Base32;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
@@ -67,23 +63,7 @@ public class User implements UserDetails {
 
     public User() {
     }
-
-
-  /*  public User(Long id, String username, String password, String firstName, String lastName, String phoneNumber,
-                Role userType) {
-        super();
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.role = new Array;
-    }*/
-    
-    
-
-
+       
     public Long getId() {
         return id;
     }
@@ -172,7 +152,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-    	Set<Permission> permissions = new HashSet<Permission>();
+    	Set<Permission> permissions = new HashSet<>();
         for(Role role : this.roles){
             for(Permission permission : role.getPermission()){
                 permissions.add(permission);

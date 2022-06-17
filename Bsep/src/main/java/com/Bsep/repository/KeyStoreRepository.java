@@ -1,11 +1,5 @@
 package com.bsep.repository;
 
-import com.bsep.keystore.KeyStoreReader;
-import com.bsep.keystore.KeyStoreWriter;
-import com.bsep.model.CertificateType;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.springframework.stereotype.Repository;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,7 +12,15 @@ import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.stereotype.Repository;
+
+import com.bsep.keystore.KeyStoreReader;
+import com.bsep.keystore.KeyStoreWriter;
+import com.bsep.model.CertificateType;
+import com.bsep.service.LoggerService;
+import com.bsep.service.impl.LoggerServiceImpl;
 
 @Repository
 public class KeyStoreRepository {
@@ -27,17 +29,19 @@ public class KeyStoreRepository {
     private KeyStore keyStoreEndEntity;
 
 
-    private final String keyStoresDirectory = "data" + File.separator + "keystores";
+    private static final String keyStoresDirectory = "data" + File.separator + "keystores";
 
-    private final String KS_ROOT_PATH = keyStoresDirectory + File.separator + "root.jks";
-    private final String KS_INTERMEDIATE_PATH = keyStoresDirectory + File.separator + "intermediate.jks";
-    private final String KS_END_ENTITY_PATH = keyStoresDirectory + File.separator + "endEntity.jks";
+    private static final String KS_ROOT_PATH = keyStoresDirectory + File.separator + "root.jks";
+    private static final String KS_INTERMEDIATE_PATH = keyStoresDirectory + File.separator + "intermediate.jks";
+    private static final String KS_END_ENTITY_PATH = keyStoresDirectory + File.separator + "endEntity.jks";
 
 
-    private final String PASSWORD = "password";
+    private static final String PASSWORD = "password";
 
     private KeyStoreWriter keyStoreWriter = new KeyStoreWriter();
     private KeyStoreReader keyStoreReader = new KeyStoreReader();
+    
+    private final LoggerService loggerService= new LoggerServiceImpl(this.getClass());
 
 
     public KeyStoreRepository() throws IOException {
@@ -52,16 +56,9 @@ public class KeyStoreRepository {
             initKeyStore(KS_INTERMEDIATE_PATH, keyStoreIntermediate);
             initKeyStore(KS_END_ENTITY_PATH, keyStoreEndEntity);
 
-        } catch (KeyStoreException e) {
-            // TODO Auto-generated catch block
-            
-        } catch (CertificateException e) {
-            
-        } catch (IOException e) {
-            
-        } catch (NoSuchAlgorithmException e) {
-            
-        }
+        } catch (KeyStoreException|CertificateException|IOException|NoSuchAlgorithmException e) {
+        	loggerService.errorLog(e);
+        } 
 
     }
 
@@ -89,7 +86,7 @@ public class KeyStoreRepository {
     }
 
     public PrivateKey getPrivateKeyForKeyStore(String issuerAlias, CertificateType certificateType)
-            throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
+            throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException {
 
         if (certificateType.equals(CertificateType.ROOT)) {
             return (PrivateKey) keyStoreRoot.getKey(issuerAlias, PASSWORD.toCharArray());
