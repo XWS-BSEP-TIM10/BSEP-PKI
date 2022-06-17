@@ -130,6 +130,8 @@ public class TokenUtils {
 
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
+            if (claims == null || claims.isEmpty())
+                return null;
             username = claims.getSubject();
         } catch (ExpiredJwtException ex) {
             throw ex;
@@ -150,6 +152,8 @@ public class TokenUtils {
         Date issueAt;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
+            if (claims == null || claims.isEmpty())
+                return null;
             issueAt = claims.getIssuedAt();
         } catch (ExpiredJwtException ex) {
             throw ex;
@@ -169,6 +173,8 @@ public class TokenUtils {
         String audience;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
+            if (claims == null || claims.isEmpty())
+                return null;
             audience = claims.getAudience();
         } catch (ExpiredJwtException ex) {
             throw ex;
@@ -188,6 +194,8 @@ public class TokenUtils {
         Date expiration;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
+            if (claims == null || claims.isEmpty())
+                return null;
             expiration = claims.getExpiration();
         } catch (ExpiredJwtException ex) {
             throw ex;

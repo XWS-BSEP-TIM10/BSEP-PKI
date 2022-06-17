@@ -1,8 +1,6 @@
 package com.bsep.service.impl;
 
 import java.util.List;
-import java.util.Optional;
-
 import com.bsep.dto.ChangePasswordDTO;
 import com.bsep.exception.UserNotFoundException;
 import com.bsep.exception.WrongPasswordException;
@@ -12,9 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-
-import com.bsep.model.Role;
 import com.bsep.model.User;
 import com.bsep.repository.UserRepository;
 import com.bsep.service.RoleService;
@@ -38,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public User findById(Long id) throws AccessDeniedException {
-		return userRepository.findById(id).orElseGet(null);
+		return userRepository.findById(id).orElseThrow(NullPointerException::new);
 	}
 
 	public List<User> findAll() throws AccessDeniedException {
