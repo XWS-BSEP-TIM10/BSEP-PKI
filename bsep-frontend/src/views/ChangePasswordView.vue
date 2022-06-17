@@ -107,7 +107,7 @@ export default {
         'Bearer ' + window.sessionStorage.getItem('jwt')
       axios
         .put('https://localhost:8080/api/v1/users/change-password', changePasswordDTO)
-        .then((response) => {
+        .then((_response) => {
           alert('Success')
           this.$router.push('/all-certificates-page')
         })
@@ -133,7 +133,7 @@ export default {
         'Bearer ' + window.sessionStorage.getItem('jwt')
       axios
         .put('https://localhost:8080/api/v1/users/2fa-status', { isEnabled: this.using2FA })
-        .then((response) => {
+        .then((_response) => {
           alert('Success')
           this.$router.push('/all-certificates-page')
         })

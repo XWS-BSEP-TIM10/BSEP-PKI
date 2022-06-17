@@ -207,7 +207,7 @@ export default {
       }
       axios
         .post('https://localhost:8080/api/v1/certificate/create', newCertificate)
-        .then((response) => {
+        .then((_response) => {
           window.location.reload()
         })
     },

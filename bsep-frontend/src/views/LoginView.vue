@@ -66,7 +66,7 @@ export default {
       enteringCode: false
     }
   },
-  mounted: function () {},
+  mounted: function () { /* empty method */ },
   methods: {
     login: function () {
       const user = {

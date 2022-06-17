@@ -14,46 +14,46 @@
   >
     <thead style="border: 1px solid gray">
       <tr>
-        <th></th>
-        <th>Certificate</th>
-        <th></th>
-        <th>Subject</th>
+        <th id="header1"></th>
+        <th id="header2">Certificate</th>
+        <th id="header3"></th>
+        <th id="header4">Subject</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <th>Certificate type:</th>
+        <th id="certType">Certificate type:</th>
         <td>{{ cert.certificateType }}</td>
-        <th>Username:</th>
+        <th id="username">Username:</th>
 
         <td>{{ cert.username }}</td>
         <!--Subject data-->
       </tr>
       <tr>
-        <th>Serial number:</th>
+        <th id="serNumber">Serial number:</th>
         <td>{{ cert.serialNumber }}</td>
-        <th>Country:</th>
+        <th id="country">Country:</th>
 
         <td>{{ cert.countryCode }}</td>
       </tr>
       <tr>
-        <th>Start date:</th>
+        <th id="startDate">Start date:</th>
         <td>{{ cert.startDate }}</td>
-        <th>Organization unit:</th>
+        <th id="orgUnit">Organization unit:</th>
 
         <td>{{ cert.organization }}</td>
       </tr>
       <tr>
-        <th>Expiration date:</th>
+        <th id="expDate">Expiration date:</th>
         <td>{{ cert.endDate }}</td>
-        <th>Organization name:</th>
+        <th id="orgName">Organization name:</th>
 
         <td>{{ cert.organizationalUnitName }}</td>
       </tr>
       <tr v-bind:class="cert.status == 'VALID' ? 'green' : 'red'">
-        <th>Certificate status:</th>
+        <th id="certStatus">Certificate status:</th>
         <td>{{ cert.status }}</td>
-        <th>Issuer common name</th>
+        <th id="issuerCommonName">Issuer common name</th>
 
         <td>{{ cert.issuerCommonName }}</td>
       </tr>
