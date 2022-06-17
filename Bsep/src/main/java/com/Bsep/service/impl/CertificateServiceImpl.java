@@ -163,7 +163,7 @@ public class CertificateServiceImpl implements CerificateService {
                 return null;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            
             return null;
         }
     }
@@ -297,7 +297,7 @@ public class CertificateServiceImpl implements CerificateService {
 
             return new SubjectData(publicKey, builder.build(), sn, startDate, endDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            
         }
         return null;
     }
@@ -336,9 +336,9 @@ public class CertificateServiceImpl implements CerificateService {
             keyGen.initialize(2048, random);
             return keyGen.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            
         } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+            
         }
         return null;
     }

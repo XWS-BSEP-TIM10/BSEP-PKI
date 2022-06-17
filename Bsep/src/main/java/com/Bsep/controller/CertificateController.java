@@ -84,7 +84,6 @@ public class CertificateController {
                     .headers(headers)
                     .body(resource);
         } catch (Exception e) {
-            e.printStackTrace();
             loggerService.certificateDownloadFailed(SecurityContextHolder.getContext().getAuthentication().getName(), id);
             return ResponseEntity.badRequest().build();
         }

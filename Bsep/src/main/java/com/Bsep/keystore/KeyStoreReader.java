@@ -30,9 +30,9 @@ public class KeyStoreReader {
         try {
             keyStore = KeyStore.getInstance("JKS", "SUN");
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            
         } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+            
         }
     }
 
@@ -59,17 +59,17 @@ public class KeyStoreReader {
             X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) cert).getSubject();
             return new IssuerData(privKey, issuerName, cert.getPublicKey());
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            
         } catch (CertificateException e) {
-            e.printStackTrace();
+            
         } catch (UnrecoverableKeyException e) {
-            e.printStackTrace();
+            
         } catch (IOException e) {
-            e.printStackTrace();
+            
         }
         return null;
     }
@@ -90,17 +90,17 @@ public class KeyStoreReader {
                 return cert;
             }
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            
         } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+            
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            
         } catch (CertificateException e) {
-            e.printStackTrace();
+            
         } catch (IOException e) {
-            e.printStackTrace();
+            
         }
         return null;
     }
@@ -121,19 +121,19 @@ public class KeyStoreReader {
                 return pk;
             }
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            
         } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+            
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            
         } catch (CertificateException e) {
-            e.printStackTrace();
+            
         } catch (IOException e) {
-            e.printStackTrace();
+            
         } catch (UnrecoverableKeyException e) {
-            e.printStackTrace();
+            
         }
         return null;
     }

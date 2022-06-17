@@ -22,9 +22,9 @@ public class KeyStoreWriter {
 		/*try {
 			keyStore = KeyStore.getInstance("JKS", "SUN");
 		} catch (KeyStoreException e) {
-			e.printStackTrace();
+			
 		} catch (NoSuchProviderException e) {
-			e.printStackTrace();
+			
 		}*/
     }
 
@@ -37,13 +37,13 @@ public class KeyStoreWriter {
                 keyStore.load(null, password);
             }
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            
         } catch (CertificateException e) {
-            e.printStackTrace();
+            
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            
         } catch (IOException e) {
-            e.printStackTrace();
+            
         }
     }
 
@@ -51,15 +51,15 @@ public class KeyStoreWriter {
         try {
             keyStore.store(new FileOutputStream(fileName), password);
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            
         } catch (CertificateException e) {
-            e.printStackTrace();
+            
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            
         } catch (IOException e) {
-            e.printStackTrace();
+            
         }
     }
 
@@ -67,7 +67,7 @@ public class KeyStoreWriter {
         try {
             keyStore.setKeyEntry(alias, privateKey, password, certificates);
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            
         }
     }
 
@@ -75,7 +75,7 @@ public class KeyStoreWriter {
         try {
             keyStore.setKeyEntry(alias, privateKey, password, certificates);
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            
         }
     }
 }

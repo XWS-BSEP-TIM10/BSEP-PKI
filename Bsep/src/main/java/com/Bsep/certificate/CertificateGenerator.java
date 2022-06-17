@@ -77,7 +77,7 @@ public class CertificateGenerator {
             //Konvertuje objekat u sertifikat
             return certConverter.getCertificate(certHolder);
         } catch (IllegalArgumentException | IllegalStateException | OperatorCreationException | CertificateException | NoSuchAlgorithmException | CertIOException e) {
-            e.printStackTrace();
+            
         }
         return null;
     }
@@ -87,13 +87,13 @@ public class CertificateGenerator {
             try {
                 certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
             } catch (CertIOException e) {
-                e.printStackTrace();
+                
             }
         } else {
             try {
                 certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
             } catch (CertIOException e) {
-                e.printStackTrace();
+                
             }
         }
         int usage = 0;
@@ -117,7 +117,7 @@ public class CertificateGenerator {
             certGen.addExtension(Extension.extendedKeyUsage, false, new ExtendedKeyUsage(purposes));
 
         } catch (CertIOException e) {
-            e.printStackTrace();
+            
         }
 
     }
