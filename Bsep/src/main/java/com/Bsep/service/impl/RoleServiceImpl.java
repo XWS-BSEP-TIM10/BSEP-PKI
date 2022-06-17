@@ -1,6 +1,7 @@
 package com.bsep.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,14 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   public Role findById(Long id) {
-    Role auth = this.roleRepository.getOne(id);
-    return auth;
+	Optional<Role> auth = this.roleRepository.findById(id);
+	if(auth.isPresent()) return auth.get();
+	return null;
   }
 
   @Override
   public List<Role> findByName(String name) {
-	List<Role> roles = this.roleRepository.findByName(name);
-    return roles;
+	return this.roleRepository.findByName(name);
   }
 
 

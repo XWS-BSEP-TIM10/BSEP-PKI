@@ -71,11 +71,12 @@ public class CertificateServiceImpl implements CerificateService {
 
     private final CertificateMapper certificateMapper;
 
-    private final String BEGIN_CERT = "-----BEGIN CERTIFICATE-----";
-    private final String END_CERT = "-----END CERTIFICATE-----";
-    private final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final String BEGIN_CERT = "-----BEGIN CERTIFICATE-----";
+    private static final String END_CERT = "-----END CERTIFICATE-----";
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
     private final SimpleDateFormat iso8601Formater = new SimpleDateFormat("yyyy-MM-dd");
-    private final String CERTIFICATE_DIRECTORY = "data" + File.separator + "certificates";
+    private static final String CERTIFICATE_DIRECTORY = "data" + File.separator + "certificates";
+    
 
 
     public CertificateServiceImpl(UserService userService, CertificateDataRepository certificateDataRepository, KeyStoreRepository keyStoreRepository, CertificateMapper certificateMapper) {
@@ -334,11 +335,9 @@ public class CertificateServiceImpl implements CerificateService {
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
             keyGen.initialize(2048, random);
             return keyGen.generateKeyPair();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException|NoSuchProviderException e) {
         	return null;
-        } catch (NoSuchProviderException e) {
-        	return null;
-        }
+        } 
     }
 
     private IssuerData getIssuerData(NewCertificateDto newCertificateDto, KeyPair keyPairSubject, SubjectData subjectData) throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateEncodingException {
