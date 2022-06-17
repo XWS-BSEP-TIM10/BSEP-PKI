@@ -35,14 +35,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public TokenDTO login(String username, String password, String code) {
     	User user = userService.findByUsername(username);
         Authentication authentication;
+        if (user.isUsing2FA() && (code == null || !code.equals(getTOTPCode(user.getSecret())))) {
+            throw new CodeNotMatchingException();
+        }
         try {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     username, password));
         }catch(Exception ex){
             return null;
-        }
-        if (user.isUsing2FA() && (code == null || !code.equals(getTOTPCode(user.getSecret())))) {
-            throw new CodeNotMatchingException();
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User loggedUser = (User) authentication.getPrincipal();
@@ -61,7 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
     
     @Override
-    public Boolean check2FA(String username, String password) {
+    public User check2FA(String username, String password) {
     	User user = userService.findByUsername(username);
         Authentication authentication;
         try {
@@ -70,7 +70,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }catch(Exception ex){
             return null;
         }
-       return user.isUsing2FA();
+       return user;
     }
     
 }

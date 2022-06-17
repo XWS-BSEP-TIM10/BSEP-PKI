@@ -4,8 +4,10 @@ import com.bsep.dto.LoginDTO;
 import com.bsep.dto.TokenDTO;
 import com.bsep.service.AuthenticationService;
 import com.bsep.service.LoggerService;
+import com.bsep.service.UserService;
 import com.bsep.service.impl.LoggerServiceImpl;
 import com.bsep.exception.CodeNotMatchingException;
+import com.bsep.model.User;
 import com.bsep.security.util.TokenUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +25,13 @@ public class AuthenticationController {
     private final LoggerService loggerService;
     private final AuthenticationService authenticationService;
     private final TokenUtils tokenUtils; 
+    private final UserService userService;
 
-    public AuthenticationController(AuthenticationService authenticationService, TokenUtils tokenUtils) {
+    public AuthenticationController(AuthenticationService authenticationService, TokenUtils tokenUtils, UserService userService) {
         this.authenticationService = authenticationService;
         this.loggerService = new LoggerServiceImpl(this.getClass());
         this.tokenUtils =tokenUtils;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/login")
@@ -38,7 +42,9 @@ public class AuthenticationController {
             loggerService.loginSuccess(tokenUtils.getUsernameFromToken(tokenDTO.getJwt()).replace('|', ' '), request.getRemoteAddr());
             return ResponseEntity.ok(tokenDTO);
         }
-        loggerService.loginFailed(loginDTO.getUsername().replace('|', ' '), request.getRemoteAddr());
+        User user = userService.findByUsername(loginDTO.getUsername());
+        if(user==null) loggerService.loginFailed("Non-existent", request.getRemoteAddr());
+        else loggerService.loginFailed(user.getUsername(), request.getRemoteAddr());
         return ResponseEntity.badRequest().build();
     	}
     	catch(CodeNotMatchingException codeNotMatchingException){
@@ -49,12 +55,12 @@ public class AuthenticationController {
     
     @PostMapping(value = "/login-check")
     public ResponseEntity<Boolean> login2FACheck(@RequestBody @Valid LoginDTO loginDTO, HttpServletRequest request) {
-        Boolean isEnabled2FA = authenticationService.check2FA(loginDTO.getUsername(), loginDTO.getPassword());
-        if(isEnabled2FA != null) {
-        	loggerService.login2FACheck(loginDTO.getUsername().replace('|', ' '), request.getRemoteAddr());
-            return ResponseEntity.ok(isEnabled2FA);
+    	User user = authenticationService.check2FA(loginDTO.getUsername(), loginDTO.getPassword());
+        if(user != null) {
+        	loggerService.login2FACheck(user.getUsername(), request.getRemoteAddr());
+            return ResponseEntity.ok(user.isUsing2FA());
         }
-        loggerService.login2FACheckFailed(loginDTO.getUsername().replace('|', ' '), request.getRemoteAddr());
+        loggerService.login2FACheckFailed("Non-existent", request.getRemoteAddr());
         return ResponseEntity.badRequest().build();
     
     }
