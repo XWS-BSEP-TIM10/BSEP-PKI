@@ -29,11 +29,11 @@ public class KeyStoreRepository {
     private KeyStore keyStoreEndEntity;
 
 
-    private static final String keyStoresDirectory = "data" + File.separator + "keystores";
+    private static final String KEY_STORES_DIRECTORY = "data" + File.separator + "keystores";
 
-    private static final String KS_ROOT_PATH = keyStoresDirectory + File.separator + "root.jks";
-    private static final String KS_INTERMEDIATE_PATH = keyStoresDirectory + File.separator + "intermediate.jks";
-    private static final String KS_END_ENTITY_PATH = keyStoresDirectory + File.separator + "endEntity.jks";
+    private static final String KS_ROOT_PATH = KEY_STORES_DIRECTORY + File.separator + "root.jks";
+    private static final String KS_INTERMEDIATE_PATH = KEY_STORES_DIRECTORY + File.separator + "intermediate.jks";
+    private static final String KS_END_ENTITY_PATH = KEY_STORES_DIRECTORY + File.separator + "endEntity.jks";
 
 
     private static final String PASSWORD = "password";
@@ -45,7 +45,7 @@ public class KeyStoreRepository {
 
 
     public KeyStoreRepository() throws IOException {
-        Files.createDirectories(Paths.get(keyStoresDirectory));
+        Files.createDirectories(Paths.get(KEY_STORES_DIRECTORY));
         Security.addProvider(new BouncyCastleProvider());
         try {
             keyStoreRoot = KeyStore.getInstance("JKS");
