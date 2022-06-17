@@ -153,7 +153,7 @@ public class CertificateServiceImpl implements CerificateService {
     public Resource getCertificateResource(Long id) {
         try {
         	Optional<CertificateData> certificateDataTemp = certificateDataRepository.findById(id);
-        	if(certificateDataTemp.isEmpty()) return null;
+        	if(!certificateDataTemp.isPresent()) return null;
         	CertificateData certificateData = certificateDataTemp.get();
             File filePath = getCertificatePath(certificateData.getSerialNumber());
             org.springframework.core.io.Resource resource = new UrlResource(filePath.toPath().toUri());
@@ -242,7 +242,7 @@ public class CertificateServiceImpl implements CerificateService {
     private void createCertificateFile(Long id) throws Exception {
         Base64.Encoder encoder = Base64.getMimeEncoder(64, LINE_SEPARATOR.getBytes());
         Optional<CertificateData> certificateDataTemp = certificateDataRepository.findById(id);
-    	if(certificateDataTemp.isEmpty()) return;
+    	if(!certificateDataTemp.isPresent()) return;
     	CertificateData certificateData = certificateDataTemp.get();
         if (!isCertificateValid(certificateData)) {
             throw new Exception();
